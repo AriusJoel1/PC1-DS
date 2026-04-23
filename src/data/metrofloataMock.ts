@@ -249,6 +249,90 @@ export const vehicleRows: VehicleRow[] = [
   },
 ];
 
+export type RouteRow = {
+  code: string;
+  name: string;
+  type: 'Troncal' | 'Expreso' | 'Alimentador';
+  stops: number;
+  length: string;
+  frequency: string;
+  buses: number;
+  state: 'Activa' | 'En Revisión' | 'Suspendida';
+};
+
+export const routeRows: RouteRow[] = [
+  {
+    code: 'TR-A',
+    name: 'Ruta A — Naranjal ↔ Matellini',
+    type: 'Troncal',
+    stops: 38,
+    length: '33.2 km',
+    frequency: '3 min',
+    buses: 62,
+    state: 'Activa',
+  },
+  {
+    code: 'TR-B',
+    name: 'Ruta B — Naranjal ↔ Ramón Castilla',
+    type: 'Troncal',
+    stops: 26,
+    length: '21.5 km',
+    frequency: '4 min',
+    buses: 44,
+    state: 'Activa',
+  },
+  {
+    code: 'TR-C',
+    name: 'Ruta C — Izaguirre ↔ Estadio Nacional',
+    type: 'Troncal',
+    stops: 22,
+    length: '18.9 km',
+    frequency: '5 min',
+    buses: 36,
+    state: 'En Revisión',
+  },
+  {
+    code: 'EX-1',
+    name: 'Expreso 1 — Naranjal ↔ Central',
+    type: 'Expreso',
+    stops: 9,
+    length: '16.0 km',
+    frequency: '6 min',
+    buses: 18,
+    state: 'Activa',
+  },
+  {
+    code: 'EX-4',
+    name: 'Expreso 4 — Matellini ↔ Javier Prado',
+    type: 'Expreso',
+    stops: 7,
+    length: '14.2 km',
+    frequency: '7 min',
+    buses: 14,
+    state: 'Activa',
+  },
+  {
+    code: 'AL-12',
+    name: 'Alimentador 12 — Naranjal ↔ Puente Piedra',
+    type: 'Alimentador',
+    stops: 24,
+    length: '11.8 km',
+    frequency: '8 min',
+    buses: 20,
+    state: 'Activa',
+  },
+  {
+    code: 'AL-18',
+    name: 'Alimentador 18 — Matellini ↔ San Juan de Miraflores',
+    type: 'Alimentador',
+    stops: 19,
+    length: '9.4 km',
+    frequency: '9 min',
+    buses: 16,
+    state: 'Suspendida',
+  },
+];
+
 export const stops = [
   { name: 'Estación Tomás Valle (Actual)', time: 'Salida: 14:32', active: true },
   { name: 'Estación Honorio Delgado', time: 'Llegada en 2 min', active: false },
