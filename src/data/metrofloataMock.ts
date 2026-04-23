@@ -2,10 +2,8 @@ import type { LucideIcon } from 'lucide-react';
 import {
   BarChart3,
   BusFront,
-  Gauge,
   Home,
   MapPinned,
-  Route,
   Settings,
   SignalHigh,
 } from 'lucide-react';
