@@ -10,7 +10,7 @@ import {
   SignalHigh,
 } from 'lucide-react';
 
-export type SectionId = 'inicio' | 'flota' | 'monitoreo';
+export type SectionId = 'inicio' | 'flota' | 'rutas' | 'monitoreo';
 
 export type NavItem = {
   id: SectionId;
