@@ -115,6 +115,7 @@ input {
   font-weight: 600;
   font-size: 14px;
   transition: 0.2s ease;
+  text-decoration: none;
 }
 
 .nav-item:hover {
@@ -423,6 +424,10 @@ input {
 .vehicle-toggle-card,
 .monitor-map-card {
   padding: 20px;
+}
+
+.monitor-map-card {
+  height: fit-content;
 }
 
 .section-head {

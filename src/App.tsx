@@ -8,6 +8,7 @@ import {
   Search,
   UserCircle2,
 } from 'lucide-react';
+import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 
 import {
   navItems,
@@ -20,10 +21,20 @@ import DashboardPage from './pages/DashboardPage';
 import FleetPage from './pages/FleetPage';
 import RoutesPage from './pages/RoutesPage';
 
+const sectionToPath: Record<SectionId, string> = {
+  inicio: '/',
+  flota: '/flota',
+  rutas: '/rutas',
+  monitoreo: '/monitoreo',
+};
+
 function App() {
-  const [section, setSection] = useState<SectionId>('inicio');
+  const location = useLocation();
   const [search, setSearch] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<'U-4022' | 'U-208'>('U-4022');
+
+  const currentPath = location.pathname;
+  const isFleetRoute = currentPath === '/flota';
 
   const filteredRows = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -55,16 +66,17 @@ function App() {
 
         <nav className="sidebar-nav">
           {navItems.map(({ id, label, icon: Icon }) => {
-            const active = section === id;
+            const path = sectionToPath[id];
             return (
-              <button
+              <NavLink
                 key={id}
-                className={`nav-item ${active ? 'active' : ''}`}
-                onClick={() => setSection(id)}
+                to={path}
+                end={path === '/'}
+                className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
               >
                 <Icon size={16} />
                 <span>{label}</span>
-              </button>
+              </NavLink>
             );
           })}
         </nav>
@@ -94,7 +106,7 @@ function App() {
                 onChange={(e) => setSearch(e.target.value)}
                 className="search-input"
                 placeholder={
-                  section === 'flota'
+                  isFleetRoute
                     ? 'Buscar vehículo por placa, consorcio...'
                     : 'Buscar...'
                 }
@@ -115,15 +127,21 @@ function App() {
           </div>
         </header>
 
-        {section === 'inicio' && <DashboardPage />}
-        {section === 'flota' && <FleetPage search={search} rows={filteredRows} />}
-        {section === 'rutas' && <RoutesPage />}
-        {section === 'monitoreo' && (
-          <MonitoringPage
-            selectedVehicle={selectedVehicle}
-            onSelectVehicle={setSelectedVehicle}
+        <Routes>
+          <Route path="/" element={<DashboardPage />} />
+          <Route path="/flota" element={<FleetPage search={search} rows={filteredRows} />} />
+          <Route path="/rutas" element={<RoutesPage />} />
+          <Route
+            path="/monitoreo"
+            element={(
+              <MonitoringPage
+                selectedVehicle={selectedVehicle}
+                onSelectVehicle={setSelectedVehicle}
+              />
+            )}
           />
-        )}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </main>
     </div>
   );
