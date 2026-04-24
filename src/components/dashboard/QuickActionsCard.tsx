@@ -1,4 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
+import './QuickActionsCard.css';
 
 type QuickActionItem = {
   icon: LucideIcon;

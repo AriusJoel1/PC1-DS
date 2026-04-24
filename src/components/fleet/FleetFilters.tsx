@@ -1,3 +1,5 @@
+import './FleetFilters.css';
+
 function FleetFilters() {
   return (
     <div className="filters-row">

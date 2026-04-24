@@ -1,5 +1,6 @@
 import { Search } from 'lucide-react';
 import { mapMarkers } from '../../data/metrofloataMock';
+import './MonitoringMapCard.css';
 
 function MonitoringMapCard() {
   return (

@@ -1,4 +1,5 @@
 import type { VehicleRow } from '../../data/metrofloataMock';
+import './FleetTable.css';
 
 type FleetTableProps = {
   rows: VehicleRow[];

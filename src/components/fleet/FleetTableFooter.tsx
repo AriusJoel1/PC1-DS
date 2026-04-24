@@ -1,3 +1,5 @@
+import './FleetTableFooter.css';
+
 type FleetTableFooterProps = {
   rowCount: number;
   search: string;

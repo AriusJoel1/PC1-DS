@@ -7,6 +7,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import './AvailabilityChartCard.css';
 
 type WeeklyItem = {
   day: string;

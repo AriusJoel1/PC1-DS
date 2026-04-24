@@ -1,3 +1,5 @@
+import './MonitoringVehicleToggleCard.css';
+
 type MonitoringVehicleToggleCardProps = {
   selectedVehicle: 'U-4022' | 'U-208';
   onSelectVehicle: (value: 'U-4022' | 'U-208') => void;

@@ -3,6 +3,4 @@
 @import './styles/common.css';
 
 @import './pages/DashboardPage.css';
-@import './pages/FleetPage.css';
-@import './pages/RoutesPage.css';
 @import './pages/MonitoringPage.css';

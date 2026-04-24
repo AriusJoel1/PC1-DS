@@ -1,0 +1,25 @@
+.vehicle-toggle-card {
+  padding: 12px;
+}
+
+.toggle-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: #f8fafc;
+  padding: 8px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+}
+
+.vehicle-toggle {
+  height: 38px;
+  border-radius: 12px;
+  color: #475569;
+  font-weight: 700;
+}
+
+.vehicle-toggle.active {
+  background: var(--primary);
+  color: #fff;
+}

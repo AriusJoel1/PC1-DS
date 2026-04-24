@@ -1,3 +1,5 @@
+import './RoutesSummary.css';
+
 type RoutesSummaryProps = {
   total: number;
   active: number;

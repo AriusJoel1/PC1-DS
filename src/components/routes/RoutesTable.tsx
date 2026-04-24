@@ -1,4 +1,5 @@
 import type { RouteRow } from '../../data/metrofloataMock';
+import './RoutesTable.css';
 
 type RoutesTableProps = {
   rows: RouteRow[];

@@ -1,4 +1,5 @@
 import { CircleAlert } from 'lucide-react';
+import './AlertsCard.css';
 
 type AlertItem = {
   title: string;

@@ -1,4 +1,5 @@
 import { MapPinned } from 'lucide-react';
+import './MonitoringRouteCard.css';
 
 function MonitoringRouteCard() {
   return (

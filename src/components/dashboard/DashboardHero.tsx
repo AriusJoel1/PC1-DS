@@ -1,3 +1,5 @@
+import './DashboardHero.css';
+
 type KpiItem = {
   title: string;
   value: string;

@@ -1,0 +1,38 @@
+.chart-card {
+  padding: 20px;
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 12px;
+  color: #475569;
+  font-weight: 600;
+  flex-wrap: wrap;
+}
+
+.legend span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.legend-dot.dark {
+  background: #0f172a;
+}
+
+.legend-dot.light {
+  background: #94a3b8;
+}
+
+.chart-box {
+  height: 310px;
+}

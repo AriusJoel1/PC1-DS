@@ -1,3 +1,5 @@
+import './RouteComplianceCard.css';
+
 type RouteComplianceItem = {
   name: string;
   value: number;

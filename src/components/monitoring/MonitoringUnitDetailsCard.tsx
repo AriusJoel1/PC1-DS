@@ -1,5 +1,6 @@
 import { BusFront } from 'lucide-react';
 import { stops } from '../../data/metrofloataMock';
+import './MonitoringUnitDetailsCard.css';
 
 type MonitoringUnitDetailsCardProps = {
   selectedVehicle: 'U-4022' | 'U-208';

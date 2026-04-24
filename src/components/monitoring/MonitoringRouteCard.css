@@ -1,0 +1,25 @@
+.route-card {
+  padding: 20px;
+}
+
+.route-card h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.route-preview {
+  margin-top: 14px;
+  height: 180px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: radial-gradient(circle at 20% 20%, #edf4ff 0, #f4f7fb 55%, #e8eef7 100%);
+}
+
+.route-preview-inner {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: #64748b;
+  gap: 10px;
+}
