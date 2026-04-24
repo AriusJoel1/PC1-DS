@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Bell,
   BusFront,
@@ -32,9 +32,14 @@ function App() {
   const location = useLocation();
   const [search, setSearch] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<'U-4022' | 'U-208'>('U-4022');
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const currentPath = location.pathname;
   const isFleetRoute = currentPath === '/flota';
+
+  useEffect(() => {
+    setMobileSidebarOpen(false);
+  }, [location.pathname]);
 
   const filteredRows = useMemo(() => {
     const q = search.toLowerCase().trim();
@@ -52,7 +57,7 @@ function App() {
   }, [search]);
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${mobileSidebarOpen ? 'sidebar-open' : ''}`}>
       <aside className="sidebar">
         <div className="brand">
           <div className="brand-icon">
@@ -73,6 +78,7 @@ function App() {
                 to={path}
                 end={path === '/'}
                 className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
+                onClick={() => setMobileSidebarOpen(false)}
               >
                 <Icon size={16} />
                 <span>{label}</span>
@@ -95,7 +101,11 @@ function App() {
       <main className="main">
         <header className="topbar">
           <div className="topbar-left">
-            <button className="icon-btn mobile-only">
+            <button
+              className="icon-btn mobile-only"
+              onClick={() => setMobileSidebarOpen((open) => !open)}
+              aria-label="Abrir menú"
+            >
               <Menu size={20} />
             </button>
 
@@ -143,6 +153,12 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+
+      <button
+        className="sidebar-backdrop"
+        onClick={() => setMobileSidebarOpen(false)}
+        aria-label="Cerrar menú"
+      />
     </div>
   );
 }
