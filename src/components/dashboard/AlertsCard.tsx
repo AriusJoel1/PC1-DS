@@ -1,16 +1,17 @@
-import { CircleAlert } from 'lucide-react';
-import './AlertsCard.css';
+import { CircleAlert } from 'lucide-react'
+import './AlertsCard.css'
 
 type AlertItem = {
-  title: string;
-  text: string;
-  time: string;
-  tone: 'danger' | 'warning';
-};
+  id: string
+  title: string
+  text: string
+  time: string
+  tone: 'danger' | 'warning'
+}
 
 type AlertsCardProps = {
-  alerts: AlertItem[];
-};
+  alerts: AlertItem[]
+}
 
 function AlertsCard({ alerts }: AlertsCardProps) {
   return (
@@ -26,7 +27,7 @@ function AlertsCard({ alerts }: AlertsCardProps) {
       <div className="alerts-list">
         {alerts.map((item) => (
           <article
-            key={item.title}
+            key={item.id}
             className={`alert-item ${item.tone === 'danger' ? 'danger' : 'warning'}`}
           >
             <div className="alert-icon">
@@ -41,7 +42,7 @@ function AlertsCard({ alerts }: AlertsCardProps) {
         ))}
       </div>
     </section>
-  );
+  )
 }
 
-export default AlertsCard;
+export default AlertsCard

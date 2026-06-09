@@ -1,16 +1,16 @@
-import './DashboardHero.css';
+import './DashboardHero.css'
 
 type KpiItem = {
-  title: string;
-  value: string;
-  delta: string;
-  subtitle: string;
-  accent: string;
-};
+  title: string
+  value: number
+  delta?: string
+  subtitle?: string
+  accent: string
+}
 
 type DashboardHeroProps = {
-  kpis: KpiItem[];
-};
+  kpis: KpiItem[]
+}
 
 function DashboardHero({ kpis }: DashboardHeroProps) {
   return (
@@ -18,9 +18,7 @@ function DashboardHero({ kpis }: DashboardHeroProps) {
       <div className="hero-head">
         <div>
           <h1 className="page-title">Panel de Control Ejecutivo</h1>
-          <p className="page-subtitle">
-            Resumen operativo del sistema integrado de transporte.
-          </p>
+          <p className="page-subtitle">Resumen operativo del sistema integrado de transporte.</p>
         </div>
 
         <div className="hero-actions">
@@ -31,24 +29,27 @@ function DashboardHero({ kpis }: DashboardHeroProps) {
 
       <div className="kpi-grid">
         {kpis.map((kpi) => (
-          <article key={kpi.title} className="kpi-card">
+          <article
+            key={kpi.title}
+            className="kpi-card"
+          >
             <div className="kpi-top">
               <span className="kpi-label">{kpi.title}</span>
               <span className={`dot dot-${kpi.accent}`} />
             </div>
             <div className="kpi-row">
-              <div className="kpi-value">{kpi.value}</div>
-              <div className="kpi-delta">{kpi.delta}</div>
+              <div className="kpi-value">{kpi.value.toLocaleString('es-PE')}</div>
+              {kpi.delta ? <div className="kpi-delta">{kpi.delta}</div> : null}
             </div>
             <div className="kpi-bar">
               <div className={`kpi-fill kpi-fill-${kpi.accent}`} />
             </div>
-            <p className="kpi-subtitle">{kpi.subtitle}</p>
+            {kpi.subtitle ? <p className="kpi-subtitle">{kpi.subtitle}</p> : null}
           </article>
         ))}
       </div>
     </section>
-  );
+  )
 }
 
-export default DashboardHero;
+export default DashboardHero
