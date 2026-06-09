@@ -21,7 +21,7 @@ export class ApiError extends Error {
   }
 }
 
-async function refresh(): Promise<boolean> {
+export async function refreshAccessToken(): Promise<boolean> {
   const res = await fetch(`${API_URL}/auth/refresh`, { method: 'POST', credentials: 'include' })
   if (!res.ok) return false
   const { accessToken: token } = (await res.json()) as { accessToken: string }
@@ -45,7 +45,7 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
 
   // Access token expirado → intenta refrescar una vez y reintenta.
   if (res.status === 401 && accessToken) {
-    if (await refresh()) res = await doFetch()
+    if (await refreshAccessToken()) res = await doFetch()
   }
 
   if (res.status === 204) return undefined as T
