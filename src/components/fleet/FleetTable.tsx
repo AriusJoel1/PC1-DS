@@ -1,12 +1,14 @@
+import { Pencil } from 'lucide-react'
 import type { Vehicle } from '../../services/vehicles'
 import { formatDate, formatKm } from '../../lib/format'
 import './FleetTable.css'
 
 type FleetTableProps = {
   rows: Vehicle[]
+  onEdit: (vehicle: Vehicle) => void
 }
 
-function FleetTable({ rows }: FleetTableProps) {
+function FleetTable({ rows, onEdit }: FleetTableProps) {
   return (
     <div className="table-wrap">
       <table className="data-table">
@@ -48,7 +50,13 @@ function FleetTable({ rows }: FleetTableProps) {
               </td>
               <td>{formatDate(row.lastInspectionDate)}</td>
               <td>
-                <button className="more-btn">⋯</button>
+                <button
+                  className="more-btn"
+                  onClick={() => onEdit(row)}
+                  aria-label={`Editar ${row.plate}`}
+                >
+                  <Pencil size={15} />
+                </button>
               </td>
             </tr>
           ))}

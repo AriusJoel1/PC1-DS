@@ -3,10 +3,11 @@ import FleetHeader from '../components/fleet/FleetHeader'
 import FleetFilters from '../components/fleet/FleetFilters'
 import FleetTable from '../components/fleet/FleetTable'
 import FleetTableFooter from '../components/fleet/FleetTableFooter'
+import EditVehicleDialog from '../components/fleet/EditVehicleDialog'
 import { useVehicles } from '../hooks/useVehicles'
 import { useConsortiums } from '../hooks/useConsortiums'
 import { useDebouncedValue } from '../hooks/useDebouncedValue'
-import type { VehicleState, VehicleType } from '../services/vehicles'
+import type { Vehicle, VehicleState, VehicleType } from '../services/vehicles'
 
 const PAGE_SIZE = 10
 
@@ -15,6 +16,7 @@ function FleetPage({ search }: { search: string }) {
   const [state, setState] = useState<VehicleState | ''>('')
   const [type, setType] = useState<VehicleType | ''>('')
   const [page, setPage] = useState(1)
+  const [editing, setEditing] = useState<Vehicle | null>(null)
 
   // Al cambiar el buscador del topbar, volver a la página 1 (patrón "ajustar estado al cambiar prop").
   const [prevSearch, setPrevSearch] = useState(search)
@@ -79,7 +81,10 @@ function FleetPage({ search }: { search: string }) {
         ) : rows.length === 0 ? (
           <div className="table-status">No se encontraron vehículos con esos criterios.</div>
         ) : (
-          <FleetTable rows={rows} />
+          <FleetTable
+            rows={rows}
+            onEdit={setEditing}
+          />
         )}
 
         <FleetTableFooter
@@ -91,6 +96,14 @@ function FleetPage({ search }: { search: string }) {
           onPageChange={setPage}
         />
       </section>
+
+      {editing ? (
+        <EditVehicleDialog
+          key={editing.id}
+          vehicle={editing}
+          onClose={() => setEditing(null)}
+        />
+      ) : null}
     </div>
   )
 }
