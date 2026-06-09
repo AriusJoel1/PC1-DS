@@ -1,11 +1,14 @@
+import { useState } from 'react'
 import RoutesHeader from '../components/routes/RoutesHeader'
 import RoutesSummary from '../components/routes/RoutesSummary'
 import RoutesTable from '../components/routes/RoutesTable'
+import RouteDetailDrawer from '../components/routes/RouteDetailDrawer'
 import { useRoutes, useRoutesSummary } from '../hooks/useRoutes'
 
 function RoutesPage() {
   const { data, isLoading, isError, error } = useRoutes({ pageSize: 100 })
   const { data: summary } = useRoutesSummary()
+  const [selectedCode, setSelectedCode] = useState<string | null>(null)
 
   const rows = data?.data ?? []
   const total = summary?.total ?? data?.meta.total ?? 0
@@ -30,7 +33,10 @@ function RoutesPage() {
         ) : rows.length === 0 ? (
           <div className="table-status">No hay rutas configuradas.</div>
         ) : (
-          <RoutesTable rows={rows} />
+          <RoutesTable
+            rows={rows}
+            onSelect={setSelectedCode}
+          />
         )}
 
         <div className="table-footer">
@@ -39,6 +45,13 @@ function RoutesPage() {
           </span>
         </div>
       </section>
+
+      {selectedCode ? (
+        <RouteDetailDrawer
+          code={selectedCode}
+          onClose={() => setSelectedCode(null)}
+        />
+      ) : null}
     </div>
   )
 }

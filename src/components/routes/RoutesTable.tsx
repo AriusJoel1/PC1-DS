@@ -1,11 +1,13 @@
+import { Eye } from 'lucide-react'
 import type { Route } from '../../services/routes'
 import './RoutesTable.css'
 
 type RoutesTableProps = {
   rows: Route[]
+  onSelect: (code: string) => void
 }
 
-function RoutesTable({ rows }: RoutesTableProps) {
+function RoutesTable({ rows, onSelect }: RoutesTableProps) {
   return (
     <div className="table-wrap">
       <table className="data-table">
@@ -46,7 +48,13 @@ function RoutesTable({ rows }: RoutesTableProps) {
                 </span>
               </td>
               <td>
-                <button className="more-btn">⋯</button>
+                <button
+                  className="more-btn"
+                  onClick={() => onSelect(row.code)}
+                  aria-label={`Ver ruta ${row.code}`}
+                >
+                  <Eye size={15} />
+                </button>
               </td>
             </tr>
           ))}
