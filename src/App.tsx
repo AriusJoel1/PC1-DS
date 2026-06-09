@@ -1,49 +1,34 @@
-import { useEffect, useMemo, useState } from 'react';
-import {
-  Bell,
-  BusFront,
-  CircleAlert,
-  HelpCircle,
-  Menu,
-  Search,
-  UserCircle2,
-} from 'lucide-react';
-import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { useMemo, useState } from 'react'
+import { Bell, BusFront, CircleAlert, HelpCircle, Menu, Search, UserCircle2 } from 'lucide-react'
+import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 
-import {
-  navItems,
-  vehicleRows,
-} from './data/metrofloataMock';
+import { navItems, vehicleRows } from './data/metrofloataMock'
 
-import type { SectionId } from './data/metrofloataMock';
-import MonitoringPage from './pages/MonitoringPage';
-import DashboardPage from './pages/DashboardPage';
-import FleetPage from './pages/FleetPage';
-import RoutesPage from './pages/RoutesPage';
+import type { SectionId } from './data/metrofloataMock'
+import MonitoringPage from './pages/MonitoringPage'
+import DashboardPage from './pages/DashboardPage'
+import FleetPage from './pages/FleetPage'
+import RoutesPage from './pages/RoutesPage'
 
 const sectionToPath: Record<SectionId, string> = {
   inicio: '/',
   flota: '/flota',
   rutas: '/rutas',
   monitoreo: '/monitoreo',
-};
+}
 
 function App() {
-  const location = useLocation();
-  const [search, setSearch] = useState('');
-  const [selectedVehicle, setSelectedVehicle] = useState<'U-4022' | 'U-208'>('U-4022');
-  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const location = useLocation()
+  const [search, setSearch] = useState('')
+  const [selectedVehicle, setSelectedVehicle] = useState<'U-4022' | 'U-208'>('U-4022')
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
-  const currentPath = location.pathname;
-  const isFleetRoute = currentPath === '/flota';
-
-  useEffect(() => {
-    setMobileSidebarOpen(false);
-  }, [location.pathname]);
+  const currentPath = location.pathname
+  const isFleetRoute = currentPath === '/flota'
 
   const filteredRows = useMemo(() => {
-    const q = search.toLowerCase().trim();
-    if (!q) return vehicleRows;
+    const q = search.toLowerCase().trim()
+    if (!q) return vehicleRows
 
     return vehicleRows.filter((row) => {
       return (
@@ -52,9 +37,9 @@ function App() {
         row.type.toLowerCase().includes(q) ||
         row.consortium.toLowerCase().includes(q) ||
         row.state.toLowerCase().includes(q)
-      );
-    });
-  }, [search]);
+      )
+    })
+  }, [search])
 
   return (
     <div className={`app-shell ${mobileSidebarOpen ? 'sidebar-open' : ''}`}>
@@ -71,7 +56,7 @@ function App() {
 
         <nav className="sidebar-nav">
           {navItems.map(({ id, label, icon: Icon }) => {
-            const path = sectionToPath[id];
+            const path = sectionToPath[id]
             return (
               <NavLink
                 key={id}
@@ -83,7 +68,7 @@ function App() {
                 <Icon size={16} />
                 <span>{label}</span>
               </NavLink>
-            );
+            )
           })}
         </nav>
 
@@ -110,16 +95,15 @@ function App() {
             </button>
 
             <div className="search-wrap">
-              <Search size={16} className="search-icon" />
+              <Search
+                size={16}
+                className="search-icon"
+              />
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="search-input"
-                placeholder={
-                  isFleetRoute
-                    ? 'Buscar vehículo por placa, consorcio...'
-                    : 'Buscar...'
-                }
+                placeholder={isFleetRoute ? 'Buscar vehículo por placa, consorcio...' : 'Buscar...'}
               />
             </div>
           </div>
@@ -138,19 +122,41 @@ function App() {
         </header>
 
         <Routes>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/flota" element={<FleetPage search={search} rows={filteredRows} />} />
-          <Route path="/rutas" element={<RoutesPage />} />
+          <Route
+            path="/"
+            element={<DashboardPage />}
+          />
+          <Route
+            path="/flota"
+            element={
+              <FleetPage
+                search={search}
+                rows={filteredRows}
+              />
+            }
+          />
+          <Route
+            path="/rutas"
+            element={<RoutesPage />}
+          />
           <Route
             path="/monitoreo"
-            element={(
+            element={
               <MonitoringPage
                 selectedVehicle={selectedVehicle}
                 onSelectVehicle={setSelectedVehicle}
               />
-            )}
+            }
           />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route
+            path="*"
+            element={
+              <Navigate
+                to="/"
+                replace
+              />
+            }
+          />
         </Routes>
       </main>
 
@@ -160,7 +166,7 @@ function App() {
         aria-label="Cerrar menú"
       />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
