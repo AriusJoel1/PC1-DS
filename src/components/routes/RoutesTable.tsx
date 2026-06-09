@@ -1,9 +1,9 @@
-import type { RouteRow } from '../../data/metrofloataMock';
-import './RoutesTable.css';
+import type { Route } from '../../services/routes'
+import './RoutesTable.css'
 
 type RoutesTableProps = {
-  rows: RouteRow[];
-};
+  rows: Route[]
+}
 
 function RoutesTable({ rows }: RoutesTableProps) {
   return (
@@ -30,22 +30,16 @@ function RoutesTable({ rows }: RoutesTableProps) {
                 <div className="cell-sub">{row.name}</div>
               </td>
               <td>
-                <span className={`type-pill type-${row.type.toLowerCase()}`}>
-                  {row.type}
-                </span>
+                <span className={`type-pill type-${row.type.toLowerCase()}`}>{row.type}</span>
               </td>
               <td>{row.stops}</td>
-              <td>{row.length}</td>
-              <td>{row.frequency}</td>
+              <td>{row.length} km</td>
+              <td>{row.frequencyMinutes} min</td>
               <td>{row.buses}</td>
               <td>
                 <span
                   className={`status-pill ${
-                    row.state === 'Activa'
-                      ? 'operativo'
-                      : row.state === 'En Revisión'
-                        ? 'en-taller'
-                        : 'alerta'
+                    row.state === 'Activa' ? 'operativo' : row.state === 'En Revisión' ? 'en-taller' : 'alerta'
                   }`}
                 >
                   {row.state}
@@ -59,7 +53,7 @@ function RoutesTable({ rows }: RoutesTableProps) {
         </tbody>
       </table>
     </div>
-  );
+  )
 }
 
-export default RoutesTable;
+export default RoutesTable

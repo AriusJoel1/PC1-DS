@@ -1,4 +1,6 @@
-import { api } from './http'
+import { api, toQuery, type Page } from './http'
+
+export type { Page }
 
 export type VehicleType = 'Bus Articulado' | 'Alimentador'
 export type VehicleState = 'Operativo' | 'En Taller' | 'Alerta'
@@ -11,11 +13,6 @@ export interface Vehicle {
   km: number // numérico → formatear en el front (km.toLocaleString())
   state: VehicleState
   lastInspectionDate: string // ISO date → formatear en el front
-}
-
-export interface Page<T> {
-  data: T[]
-  meta: { total: number; page: number; pageSize: number }
 }
 
 export interface ListVehiclesParams {
@@ -39,15 +36,6 @@ export interface VehicleCreate {
 }
 
 export type VehicleUpdate = Partial<Omit<VehicleCreate, 'id'>>
-
-function toQuery(params: Record<string, unknown>): string {
-  const q = new URLSearchParams(
-    Object.entries(params)
-      .filter(([, v]) => v != null && v !== '')
-      .map(([k, v]) => [k, String(v)]),
-  ).toString()
-  return q ? `?${q}` : ''
-}
 
 export function listVehicles(params: ListVehiclesParams = {}): Promise<Page<Vehicle>> {
   return api<Page<Vehicle>>(`/vehicles${toQuery(params as Record<string, unknown>)}`)

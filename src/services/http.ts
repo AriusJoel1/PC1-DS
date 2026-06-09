@@ -29,6 +29,20 @@ export async function refreshAccessToken(): Promise<boolean> {
   return true
 }
 
+export interface Page<T> {
+  data: T[]
+  meta: { total: number; page: number; pageSize: number }
+}
+
+export function toQuery(params: Record<string, unknown>): string {
+  const q = new URLSearchParams(
+    Object.entries(params)
+      .filter(([, v]) => v != null && v !== '')
+      .map(([k, v]) => [k, String(v)]),
+  ).toString()
+  return q ? `?${q}` : ''
+}
+
 export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   const doFetch = () =>
     fetch(`${API_URL}${path}`, {

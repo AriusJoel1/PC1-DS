@@ -1,27 +1,46 @@
-import { routeRows } from '../data/metrofloataMock';
-import RoutesHeader from '../components/routes/RoutesHeader';
-import RoutesSummary from '../components/routes/RoutesSummary';
-import RoutesTable from '../components/routes/RoutesTable';
+import RoutesHeader from '../components/routes/RoutesHeader'
+import RoutesSummary from '../components/routes/RoutesSummary'
+import RoutesTable from '../components/routes/RoutesTable'
+import { useRoutes, useRoutesSummary } from '../hooks/useRoutes'
 
 function RoutesPage() {
-  const total = routeRows.length;
-  const active = routeRows.filter((r) => r.state === 'Activa').length;
-  const review = routeRows.filter((r) => r.state === 'En Revisión').length;
-  const suspended = routeRows.filter((r) => r.state === 'Suspendida').length;
+  const { data, isLoading, isError, error } = useRoutes({ pageSize: 100 })
+  const { data: summary } = useRoutesSummary()
+
+  const rows = data?.data ?? []
+  const total = summary?.total ?? data?.meta.total ?? 0
 
   return (
     <div className="page">
       <section className="card table-card">
         <RoutesHeader />
-        <RoutesSummary total={total} active={active} review={review} suspended={suspended} />
-        <RoutesTable rows={routeRows} />
+        <RoutesSummary
+          total={summary?.total ?? 0}
+          active={summary?.active ?? 0}
+          review={summary?.review ?? 0}
+          suspended={summary?.suspended ?? 0}
+        />
+
+        {isLoading ? (
+          <div className="table-status">Cargando rutas…</div>
+        ) : isError ? (
+          <div className="table-status table-status-error">
+            Error al cargar las rutas: {error instanceof Error ? error.message : 'desconocido'}
+          </div>
+        ) : rows.length === 0 ? (
+          <div className="table-status">No hay rutas configuradas.</div>
+        ) : (
+          <RoutesTable rows={rows} />
+        )}
 
         <div className="table-footer">
-          <span>Mostrando {total} rutas configuradas</span>
+          <span>
+            Mostrando {rows.length} de {total} rutas configuradas
+          </span>
         </div>
       </section>
     </div>
-  );
+  )
 }
 
 export default RoutesPage
