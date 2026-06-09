@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Bell, BusFront, CircleAlert, HelpCircle, LogOut, Menu, Search, UserCircle2 } from 'lucide-react'
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 
-import { navItems, vehicleRows } from './data/metrofloataMock'
+import { navItems } from './data/metrofloataMock'
 
 import type { SectionId } from './data/metrofloataMock'
 import MonitoringPage from './pages/MonitoringPage'
@@ -29,21 +29,6 @@ function App() {
 
   const currentPath = location.pathname
   const isFleetRoute = currentPath === '/flota'
-
-  const filteredRows = useMemo(() => {
-    const q = search.toLowerCase().trim()
-    if (!q) return vehicleRows
-
-    return vehicleRows.filter((row) => {
-      return (
-        row.plate.toLowerCase().includes(q) ||
-        row.id.toLowerCase().includes(q) ||
-        row.type.toLowerCase().includes(q) ||
-        row.consortium.toLowerCase().includes(q) ||
-        row.state.toLowerCase().includes(q)
-      )
-    })
-  }, [search])
 
   // El login es pantalla completa, fuera del shell (sidebar + topbar).
   if (currentPath === '/login') {
@@ -150,12 +135,7 @@ function App() {
             />
             <Route
               path="/flota"
-              element={
-                <FleetPage
-                  search={search}
-                  rows={filteredRows}
-                />
-              }
+              element={<FleetPage search={search} />}
             />
             <Route
               path="/rutas"

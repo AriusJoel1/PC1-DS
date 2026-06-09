@@ -18,3 +18,8 @@
   color: #fff;
   border-color: var(--primary);
 }
+
+.page-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

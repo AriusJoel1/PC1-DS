@@ -18,6 +18,23 @@
   border-radius: inherit;
 }
 
-.km-fill.ok { background: #1d4ed8; }
-.km-fill.warn { background: #f59e0b; }
-.km-fill.bad { background: #ef4444; }
+.km-fill.ok {
+  background: #1d4ed8;
+}
+.km-fill.warn {
+  background: #f59e0b;
+}
+.km-fill.bad {
+  background: #ef4444;
+}
+
+.table-status {
+  padding: 28px 16px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.table-status-error {
+  color: #b91c1c;
+}
