@@ -27,14 +27,3 @@
 .km-fill.bad {
   background: #ef4444;
 }
-
-.table-status {
-  padding: 28px 16px;
-  text-align: center;
-  color: #64748b;
-  font-size: 14px;
-}
-
-.table-status-error {
-  color: #b91c1c;
-}
