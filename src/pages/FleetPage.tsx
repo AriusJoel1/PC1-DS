@@ -4,6 +4,8 @@ import FleetFilters from '../components/fleet/FleetFilters'
 import FleetTable from '../components/fleet/FleetTable'
 import FleetTableFooter from '../components/fleet/FleetTableFooter'
 import EditVehicleDialog from '../components/fleet/EditVehicleDialog'
+import StateMessage from '../components/common/StateMessage'
+import { errorMessage } from '../lib/errorMessage'
 import { useVehicles } from '../hooks/useVehicles'
 import { useConsortiums } from '../hooks/useConsortiums'
 import { useDebouncedValue } from '../hooks/useDebouncedValue'
@@ -73,13 +75,22 @@ function FleetPage({ search }: { search: string }) {
         />
 
         {isLoading ? (
-          <div className="table-status">Cargando vehículos…</div>
+          <StateMessage
+            variant="loading"
+            title="Cargando vehículos…"
+          />
         ) : isError ? (
-          <div className="table-status table-status-error">
-            Error al cargar la flota: {error instanceof Error ? error.message : 'desconocido'}
-          </div>
+          <StateMessage
+            variant="error"
+            title="No se pudo cargar la flota"
+            detail={errorMessage(error)}
+          />
         ) : rows.length === 0 ? (
-          <div className="table-status">No se encontraron vehículos con esos criterios.</div>
+          <StateMessage
+            variant="empty"
+            title="No se encontraron vehículos"
+            detail="Prueba con otros filtros o términos de búsqueda."
+          />
         ) : (
           <FleetTable
             rows={rows}

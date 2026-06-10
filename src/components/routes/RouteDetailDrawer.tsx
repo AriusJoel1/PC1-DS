@@ -1,5 +1,7 @@
 import { MapPin, X } from 'lucide-react'
 import { useRoute } from '../../hooks/useRoutes'
+import StateMessage from '../common/StateMessage'
+import { errorMessage } from '../../lib/errorMessage'
 import './RouteDetailDrawer.css'
 
 type RouteDetailDrawerProps = {
@@ -37,11 +39,16 @@ function RouteDetailDrawer({ code, onClose }: RouteDetailDrawerProps) {
         </div>
 
         {isLoading ? (
-          <div className="table-status">Cargando detalle…</div>
+          <StateMessage
+            variant="loading"
+            title="Cargando detalle…"
+          />
         ) : isError ? (
-          <div className="table-status table-status-error">
-            Error al cargar la ruta: {error instanceof Error ? error.message : 'desconocido'}
-          </div>
+          <StateMessage
+            variant="error"
+            title="No se pudo cargar la ruta"
+            detail={errorMessage(error)}
+          />
         ) : data ? (
           <div className="drawer-body">
             <div className="drawer-meta">

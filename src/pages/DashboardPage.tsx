@@ -4,14 +4,17 @@ import AvailabilityChartCard from '../components/dashboard/AvailabilityChartCard
 import AlertsCard from '../components/dashboard/AlertsCard'
 import RouteComplianceCard from '../components/dashboard/RouteComplianceCard'
 import QuickActionsCard from '../components/dashboard/QuickActionsCard'
+import StateMessage from '../components/common/StateMessage'
 import { useAvailability, useKpis, useRecentAlerts, useRouteCompliance } from '../hooks/useDashboard'
 import { formatRelativeTime } from '../lib/format'
 
 function DashboardPage() {
-  const { data: kpis = [] } = useKpis()
-  const { data: weeklyData = [] } = useAvailability('week')
-  const { data: routeCompliance = [] } = useRouteCompliance()
-  const { data: recentAlerts = [] } = useRecentAlerts(3)
+  const { data: kpis = [], isError: kpisError } = useKpis()
+  const { data: weeklyData = [], isError: availabilityError } = useAvailability('week')
+  const { data: routeCompliance = [], isError: complianceError } = useRouteCompliance()
+  const { data: recentAlerts = [], isError: alertsError } = useRecentAlerts(3)
+
+  const hasError = kpisError || availabilityError || complianceError || alertsError
 
   const alerts = recentAlerts.map((a) => ({
     id: a.id,
@@ -23,6 +26,14 @@ function DashboardPage() {
 
   return (
     <div className="page page-dashboard">
+      {hasError ? (
+        <StateMessage
+          variant="error"
+          title="Algunos datos del panel no se pudieron cargar"
+          detail="Revisa la conexión con el backend e inténtalo de nuevo."
+        />
+      ) : null}
+
       <DashboardHero kpis={kpis} />
 
       <div className="dashboard-grid">

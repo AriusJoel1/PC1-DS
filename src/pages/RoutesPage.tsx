@@ -3,6 +3,8 @@ import RoutesHeader from '../components/routes/RoutesHeader'
 import RoutesSummary from '../components/routes/RoutesSummary'
 import RoutesTable from '../components/routes/RoutesTable'
 import RouteDetailDrawer from '../components/routes/RouteDetailDrawer'
+import StateMessage from '../components/common/StateMessage'
+import { errorMessage } from '../lib/errorMessage'
 import { useRoutes, useRoutesSummary } from '../hooks/useRoutes'
 
 function RoutesPage() {
@@ -25,13 +27,21 @@ function RoutesPage() {
         />
 
         {isLoading ? (
-          <div className="table-status">Cargando rutas…</div>
+          <StateMessage
+            variant="loading"
+            title="Cargando rutas…"
+          />
         ) : isError ? (
-          <div className="table-status table-status-error">
-            Error al cargar las rutas: {error instanceof Error ? error.message : 'desconocido'}
-          </div>
+          <StateMessage
+            variant="error"
+            title="No se pudieron cargar las rutas"
+            detail={errorMessage(error)}
+          />
         ) : rows.length === 0 ? (
-          <div className="table-status">No hay rutas configuradas.</div>
+          <StateMessage
+            variant="empty"
+            title="No hay rutas configuradas"
+          />
         ) : (
           <RoutesTable
             rows={rows}
