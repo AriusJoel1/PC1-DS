@@ -25,7 +25,6 @@ function App() {
   const location = useLocation()
   const { user, logout } = useAuth()
   const [search, setSearch] = useState('')
-  const [selectedVehicle, setSelectedVehicle] = useState<'U-4022' | 'U-208'>('U-4022')
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
   const currentPath = location.pathname
@@ -142,12 +141,7 @@ function App() {
             />
             <Route
               path="/monitoreo"
-              element={
-                <MonitoringPage
-                  selectedVehicle={selectedVehicle}
-                  onSelectVehicle={setSelectedVehicle}
-                />
-              }
+              element={<MonitoringPage />}
             />
             <Route
               path="*"

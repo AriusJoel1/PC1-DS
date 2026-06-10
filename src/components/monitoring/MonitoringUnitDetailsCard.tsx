@@ -1,10 +1,10 @@
-import { BusFront } from 'lucide-react';
-import { stops } from '../../data/metrofloataMock';
-import './MonitoringUnitDetailsCard.css';
+import { BusFront } from 'lucide-react'
+import { stops } from '../../data/metrofloataMock'
+import './MonitoringUnitDetailsCard.css'
 
 type MonitoringUnitDetailsCardProps = {
-  selectedVehicle: 'U-4022' | 'U-208';
-};
+  selectedVehicle: string
+}
 
 function MonitoringUnitDetailsCard({ selectedVehicle }: MonitoringUnitDetailsCardProps) {
   return (
@@ -18,12 +18,8 @@ function MonitoringUnitDetailsCard({ selectedVehicle }: MonitoringUnitDetailsCar
             <BusFront size={22} />
           </div>
           <div>
-            <div className="unit-name">
-              {selectedVehicle === 'U-4022' ? 'U-4022' : 'U-208'}
-            </div>
-            <div className="unit-route">
-              Ruta Tronc. B • Exp. Norte
-            </div>
+            <div className="unit-name">{selectedVehicle}</div>
+            <div className="unit-route">Ruta Tronc. B • Exp. Norte</div>
           </div>
         </div>
         <div className="unit-status">EN RUTA</div>
@@ -32,12 +28,16 @@ function MonitoringUnitDetailsCard({ selectedVehicle }: MonitoringUnitDetailsCar
       <div className="mini-grid">
         <div className="mini-card">
           <span>Velocidad</span>
-          <strong>64<small> km/h</small></strong>
+          <strong>
+            64<small> km/h</small>
+          </strong>
         </div>
 
         <div className="mini-card">
           <span>Ocupación</span>
-          <strong>65<small>%</small></strong>
+          <strong>
+            65<small>%</small>
+          </strong>
         </div>
       </div>
 
@@ -52,13 +52,14 @@ function MonitoringUnitDetailsCard({ selectedVehicle }: MonitoringUnitDetailsCar
 
         <div className="stops-list">
           {stops.map((stop) => (
-            <div key={stop.name} className="stop-item">
+            <div
+              key={stop.name}
+              className="stop-item"
+            >
               <div className={`stop-dot ${stop.active ? 'active' : ''}`} />
               <div className="stop-content">
                 <strong>{stop.name}</strong>
-                <div className={stop.active ? 'stop-meta active' : 'stop-meta'}>
-                  {stop.time}
-                </div>
+                <div className={stop.active ? 'stop-meta active' : 'stop-meta'}>{stop.time}</div>
               </div>
             </div>
           ))}
@@ -67,7 +68,7 @@ function MonitoringUnitDetailsCard({ selectedVehicle }: MonitoringUnitDetailsCar
 
       <button className="btn btn-primary full">Contactar Unidad</button>
     </section>
-  );
+  )
 }
 
-export default MonitoringUnitDetailsCard;
+export default MonitoringUnitDetailsCard

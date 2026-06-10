@@ -1,29 +1,31 @@
-import MonitoringMapCard from '../components/monitoring/MonitoringMapCard';
-import MonitoringUnitDetailsCard from '../components/monitoring/MonitoringUnitDetailsCard';
-import MonitoringRouteCard from '../components/monitoring/MonitoringRouteCard';
-import MonitoringVehicleToggleCard from '../components/monitoring/MonitoringVehicleToggleCard';
+import { useState } from 'react'
+import MonitoringMapCard from '../components/monitoring/MonitoringMapCard'
+import MonitoringUnitDetailsCard from '../components/monitoring/MonitoringUnitDetailsCard'
+import MonitoringRouteCard from '../components/monitoring/MonitoringRouteCard'
+import MonitoringVehicleToggleCard from '../components/monitoring/MonitoringVehicleToggleCard'
+import { useUnits } from '../hooks/useMonitoring'
 
-function MonitoringPage({
-  selectedVehicle,
-  onSelectVehicle,
-}: {
-  selectedVehicle: 'U-4022' | 'U-208';
-  onSelectVehicle: (value: 'U-4022' | 'U-208') => void;
-}) {
+function MonitoringPage() {
+  const { data: units = [] } = useUnits()
+  const [selected, setSelected] = useState('')
+
+  const selectedUnit = selected || units[0]?.id || ''
+
   return (
     <div className="page monitor-layout">
       <MonitoringMapCard />
 
       <aside className="monitor-side">
-        <MonitoringUnitDetailsCard selectedVehicle={selectedVehicle} />
+        <MonitoringUnitDetailsCard selectedVehicle={selectedUnit} />
         <MonitoringRouteCard />
         <MonitoringVehicleToggleCard
-          selectedVehicle={selectedVehicle}
-          onSelectVehicle={onSelectVehicle}
+          units={units}
+          selected={selectedUnit}
+          onSelect={setSelected}
         />
       </aside>
     </div>
-  );
+  )
 }
 
 export default MonitoringPage

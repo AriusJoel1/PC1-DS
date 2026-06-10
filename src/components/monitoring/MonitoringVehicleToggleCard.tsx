@@ -1,32 +1,28 @@
-import './MonitoringVehicleToggleCard.css';
+import type { MonitoringUnit } from '../../services/monitoring'
+import './MonitoringVehicleToggleCard.css'
 
 type MonitoringVehicleToggleCardProps = {
-  selectedVehicle: 'U-4022' | 'U-208';
-  onSelectVehicle: (value: 'U-4022' | 'U-208') => void;
-};
+  units: MonitoringUnit[]
+  selected: string
+  onSelect: (id: string) => void
+}
 
-function MonitoringVehicleToggleCard({
-  selectedVehicle,
-  onSelectVehicle,
-}: MonitoringVehicleToggleCardProps) {
+function MonitoringVehicleToggleCard({ units, selected, onSelect }: MonitoringVehicleToggleCardProps) {
   return (
     <section className="card vehicle-toggle-card">
       <div className="toggle-row">
-        <button
-          className={`vehicle-toggle ${selectedVehicle === 'U-4022' ? 'active' : ''}`}
-          onClick={() => onSelectVehicle('U-4022')}
-        >
-          U-4022
-        </button>
-        <button
-          className={`vehicle-toggle ${selectedVehicle === 'U-208' ? 'active' : ''}`}
-          onClick={() => onSelectVehicle('U-208')}
-        >
-          U-208
-        </button>
+        {units.map((unit) => (
+          <button
+            key={unit.id}
+            className={`vehicle-toggle ${selected === unit.id ? 'active' : ''}`}
+            onClick={() => onSelect(unit.id)}
+          >
+            {unit.label}
+          </button>
+        ))}
       </div>
     </section>
-  );
+  )
 }
 
-export default MonitoringVehicleToggleCard;
+export default MonitoringVehicleToggleCard
