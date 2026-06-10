@@ -16,7 +16,7 @@ function MonitoringPage() {
 
   return (
     <div className="page monitor-layout">
-      <MonitoringMapCard />
+      <MonitoringMapCard selectedUnit={selectedUnit} />
 
       <aside className="monitor-side">
         <MonitoringUnitDetailsCard selectedVehicle={selectedUnit} />

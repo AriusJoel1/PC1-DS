@@ -1,99 +1,104 @@
-import { Search } from 'lucide-react';
-import { mapMarkers } from '../../data/metrofloataMock';
-import './MonitoringMapCard.css';
+import { useEffect, useRef } from 'react'
+import { CircleMarker, MapContainer, Polyline, TileLayer, Tooltip, useMap } from 'react-leaflet'
+import 'leaflet/dist/leaflet.css'
+import { useUnitPosition, useUnitStatus } from '../../hooks/useMonitoring'
+import './MonitoringMapCard.css'
 
-function MonitoringMapCard() {
+const LIMA_CENTER: [number, number] = [-12.05, -77.04]
+
+type LatLng = [number, number]
+
+/** Encuadra el mapa a los puntos solo cuando cambia la unidad (no en cada tick del bus). */
+function FitToData({ bounds, fitKey }: { bounds: LatLng[]; fitKey: string }) {
+  const map = useMap()
+  const lastKey = useRef<string | null>(null)
+
+  useEffect(() => {
+    if (bounds.length === 0 || lastKey.current === fitKey) return
+    lastKey.current = fitKey
+    map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15 })
+  }, [map, bounds, fitKey])
+
+  return null
+}
+
+type MonitoringMapCardProps = {
+  selectedUnit: string
+}
+
+function MonitoringMapCard({ selectedUnit }: MonitoringMapCardProps) {
+  const { data: status } = useUnitStatus(selectedUnit)
+  const { data: position } = useUnitPosition(selectedUnit)
+
+  const busPos: LatLng | null = status?.position ? [status.position.lat, status.position.lng] : null
+  const stops = position?.markers ?? []
+  const stopPoints: LatLng[] = stops.map((m) => [m.lat, m.lng])
+  const bounds: LatLng[] = [...stopPoints, ...(busPos ? [busPos] : [])]
+
   return (
     <section className="card monitor-map-card">
       <div className="monitor-head">
-        <div className="route-switch">
-          <button className="route-btn active">Ruta Troncal</button>
-          <button className="route-btn">Alimentadores</button>
-        </div>
-
-        <div className="small-search">
-          <Search size={14} />
-          <input placeholder="Buscar unidad..." />
-        </div>
+        <span className="map-title">Mapa en vivo</span>
+        <span className="map-unit-badge">
+          {selectedUnit || '—'}
+          {status?.routeCode ? ` • Ruta ${status.routeCode}` : ''}
+        </span>
       </div>
 
       <div className="map-card">
-        <div className="map-tabs">
-          <button className="map-tab active">Mapa</button>
-          <button className="map-tab">Satélite</button>
-          <button className="map-tab">Tráfico</button>
-        </div>
+        <MapContainer
+          center={busPos ?? LIMA_CENTER}
+          zoom={13}
+          scrollWheelZoom
+          className="leaflet-map"
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
 
-        <div className="map-search">
-          <Search size={14} />
-          <input placeholder="Buscar unidad..." />
-        </div>
-
-        <div className="map-background">
-          <svg viewBox="0 0 1000 1000" className="map-svg">
-            <defs>
-              <filter id="blur">
-                <feGaussianBlur stdDeviation="1.1" />
-              </filter>
-            </defs>
-
-            {Array.from({ length: 38 }).map((_, i) => (
-              <g key={i} stroke="#c8d3e3" strokeWidth="2" opacity={i % 2 === 0 ? 0.8 : 0.45}>
-                <line x1={(i * 37) % 1000} y1={0} x2={(i * 37) % 1000} y2={1000} />
-                <line x1={0} y1={(i * 28) % 1000} x2={1000} y2={(i * 28) % 1000} />
-              </g>
-            ))}
-
-            <path
-              d="M500 120 C470 220, 430 360, 480 500 C520 610, 535 720, 500 880"
-              stroke="#123b70"
-              strokeWidth="16"
-              fill="none"
-              strokeLinecap="round"
-              filter="url(#blur)"
-              opacity="0.9"
+          {stopPoints.length > 1 ? (
+            <Polyline
+              positions={stopPoints}
+              pathOptions={{ color: '#5b59f0', weight: 4, opacity: 0.55 }}
             />
-            <path
-              d="M500 120 C470 220, 430 360, 480 500 C520 610, 535 720, 500 880"
-              stroke="#5b59f0"
-              strokeWidth="9"
-              fill="none"
-              strokeLinecap="round"
-            />
-          </svg>
+          ) : null}
 
-          {mapMarkers.map((marker, idx) => (
-            <div
-              key={idx}
-              className="bus-dot"
-              style={{ left: marker.left, top: marker.top }}
-            />
+          {stops.map((m) => (
+            <CircleMarker
+              key={`${m.order}-${m.name}`}
+              center={[m.lat, m.lng]}
+              radius={5}
+              pathOptions={{ color: '#123b70', weight: 2, fillColor: '#fff', fillOpacity: 1 }}
+            >
+              <Tooltip>{m.name}</Tooltip>
+            </CircleMarker>
           ))}
 
-          <div className="floating-timebox">
-            <div>4 min</div>
-            <span>2 km</span>
-          </div>
+          {busPos ? (
+            <CircleMarker
+              center={busPos}
+              radius={9}
+              pathOptions={{ color: '#fff', weight: 3, fillColor: '#1d4ed8', fillOpacity: 1 }}
+            >
+              <Tooltip
+                permanent
+                direction="top"
+              >
+                {selectedUnit}
+                {status ? ` · ${status.speedKmh} km/h` : ''}
+              </Tooltip>
+            </CircleMarker>
+          ) : null}
 
-          <div className="floating-legend">
-            <div className="legend-title">Estado de Flota</div>
-            <div className="legend-line">
-              <span className="legend-bullet green" />
-              En ruta (245)
-            </div>
-            <div className="legend-line">
-              <span className="legend-bullet amber" />
-              Retraso (12)
-            </div>
-            <div className="legend-line">
-              <span className="legend-bullet red" />
-              Detenido (4)
-            </div>
-          </div>
-        </div>
+          <FitToData
+            bounds={bounds}
+            fitKey={selectedUnit}
+          />
+        </MapContainer>
       </div>
     </section>
-  );
+  )
 }
 
-export default MonitoringMapCard;
+export default MonitoringMapCard

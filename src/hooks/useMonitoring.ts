@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { getUnit, getUnitRoute, listUnits } from '../services/monitoring'
+import { getUnit, getUnitPosition, getUnitRoute, listUnits } from '../services/monitoring'
 import { streamUnit } from '../services/monitoringStream'
 
 export function useUnits() {
@@ -23,6 +23,14 @@ export function useUnitRoute(id: string) {
   return useQuery({
     queryKey: ['monitoring', 'unit', id, 'route'],
     queryFn: () => getUnitRoute(id),
+    enabled: id !== '',
+  })
+}
+
+export function useUnitPosition(id: string) {
+  return useQuery({
+    queryKey: ['monitoring', 'unit', id, 'position'],
+    queryFn: () => getUnitPosition(id),
     enabled: id !== '',
   })
 }
