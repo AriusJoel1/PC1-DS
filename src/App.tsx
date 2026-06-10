@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Bell, BusFront, CircleAlert, HelpCircle, LogOut, Menu, Search, UserCircle2 } from 'lucide-react'
+import { BusFront, CircleAlert, HelpCircle, LogOut, Menu, Search, UserCircle2 } from 'lucide-react'
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 
 import { navItems } from './data/metrofloataMock'
@@ -10,6 +10,7 @@ import DashboardPage from './pages/DashboardPage'
 import FleetPage from './pages/FleetPage'
 import RoutesPage from './pages/RoutesPage'
 import LoginPage from './pages/LoginPage'
+import AlertsBell from './components/alerts/AlertsBell'
 import { RequireAuth } from './auth/RequireAuth'
 import { useAuth } from './auth/useAuth'
 
@@ -104,9 +105,7 @@ function App() {
             </div>
 
             <div className="topbar-right">
-              <button className="icon-btn">
-                <Bell size={17} />
-              </button>
+              <AlertsBell />
               <button className="icon-btn">
                 <HelpCircle size={17} />
               </button>
