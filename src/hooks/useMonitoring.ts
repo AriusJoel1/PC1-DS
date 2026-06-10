@@ -1,5 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { useEffect } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getUnit, getUnitRoute, listUnits } from '../services/monitoring'
+import { streamUnit } from '../services/monitoringStream'
 
 export function useUnits() {
   return useQuery({
@@ -23,4 +25,15 @@ export function useUnitRoute(id: string) {
     queryFn: () => getUnitRoute(id),
     enabled: id !== '',
   })
+}
+
+export function useUnitStream(id: string) {
+  const qc = useQueryClient()
+
+  useEffect(() => {
+    if (id === '') return
+    return streamUnit(id, (status) => {
+      qc.setQueryData(['monitoring', 'unit', id], status)
+    })
+  }, [id, qc])
 }
