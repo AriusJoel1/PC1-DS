@@ -1,5 +1,5 @@
 import { BusFront } from 'lucide-react'
-import { stops } from '../../data/metrofloataMock'
+import { useUnitRoute, useUnitStatus } from '../../hooks/useMonitoring'
 import './MonitoringUnitDetailsCard.css'
 
 type MonitoringUnitDetailsCardProps = {
@@ -7,6 +7,12 @@ type MonitoringUnitDetailsCardProps = {
 }
 
 function MonitoringUnitDetailsCard({ selectedVehicle }: MonitoringUnitDetailsCardProps) {
+  const { data: status } = useUnitStatus(selectedVehicle)
+  const { data: route } = useUnitRoute(selectedVehicle)
+
+  const occupancy = status && status.capacity > 0 ? Math.round((status.passengers / status.capacity) * 100) : null
+  const stops = route?.stops ?? []
+
   return (
     <section className="card detail-card">
       <h2>Detalles de Unidad</h2>
@@ -18,8 +24,8 @@ function MonitoringUnitDetailsCard({ selectedVehicle }: MonitoringUnitDetailsCar
             <BusFront size={22} />
           </div>
           <div>
-            <div className="unit-name">{selectedVehicle}</div>
-            <div className="unit-route">Ruta Tronc. B • Exp. Norte</div>
+            <div className="unit-name">{selectedVehicle || '—'}</div>
+            <div className="unit-route">{status?.routeCode ? `Ruta ${status.routeCode}` : 'Sin ruta asignada'}</div>
           </div>
         </div>
         <div className="unit-status">EN RUTA</div>
@@ -29,40 +35,50 @@ function MonitoringUnitDetailsCard({ selectedVehicle }: MonitoringUnitDetailsCar
         <div className="mini-card">
           <span>Velocidad</span>
           <strong>
-            64<small> km/h</small>
+            {status?.speedKmh ?? '—'}
+            <small> km/h</small>
           </strong>
         </div>
 
         <div className="mini-card">
           <span>Ocupación</span>
           <strong>
-            65<small>%</small>
+            {occupancy ?? '—'}
+            <small>%</small>
           </strong>
         </div>
       </div>
 
       <div className="mini-card conductor">
         <span>Conductor</span>
-        <strong>Roberto Salazar</strong>
-        <small>ID: 88492-C</small>
+        <strong>{status?.driver ?? 'Sin asignar'}</strong>
+        {status ? (
+          <small>
+            {status.passengers}/{status.capacity} pasajeros
+          </small>
+        ) : null}
       </div>
 
       <div className="stops-card">
         <span>Próximas paradas</span>
 
         <div className="stops-list">
-          {stops.map((stop) => (
-            <div
-              key={stop.name}
-              className="stop-item"
-            >
-              <div className={`stop-dot ${stop.active ? 'active' : ''}`} />
-              <div className="stop-content">
-                <strong>{stop.name}</strong>
-                <div className={stop.active ? 'stop-meta active' : 'stop-meta'}>{stop.time}</div>
+          {stops.length === 0 ? (
+            <div className="stop-meta">Sin paradas próximas.</div>
+          ) : (
+            stops.map((stop) => (
+              <div
+                key={stop.name}
+                className="stop-item"
+              >
+                <div className={`stop-dot ${stop.active ? 'active' : ''}`} />
+                <div className="stop-content">
+                  <strong>{stop.name}</strong>
+                  <div className={stop.active ? 'stop-meta active' : 'stop-meta'}>{stop.time}</div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
