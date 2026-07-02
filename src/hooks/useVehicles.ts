@@ -1,6 +1,7 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   createVehicle,
+  deleteVehicle,
   listVehicles,
   updateVehicle,
   type ListVehiclesParams,
@@ -28,6 +29,14 @@ export function useUpdateVehicle() {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: ({ id, patch }: { id: string; patch: VehicleUpdate }) => updateVehicle(id, patch),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['vehicles'] }),
+  })
+}
+
+export function useDeleteVehicle() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => deleteVehicle(id),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['vehicles'] }),
   })
 }

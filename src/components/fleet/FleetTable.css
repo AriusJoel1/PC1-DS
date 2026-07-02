@@ -27,3 +27,13 @@
 .km-fill.bad {
   background: #ef4444;
 }
+
+.row-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.more-btn-danger:hover {
+  color: #dc2626;
+  background: #fef2f2;
+}

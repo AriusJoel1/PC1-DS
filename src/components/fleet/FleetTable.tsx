@@ -1,4 +1,4 @@
-import { Pencil } from 'lucide-react'
+import { Pencil, Trash2 } from 'lucide-react'
 import type { Vehicle } from '../../services/vehicles'
 import { formatDate, formatKm } from '../../lib/format'
 import './FleetTable.css'
@@ -6,9 +6,10 @@ import './FleetTable.css'
 type FleetTableProps = {
   rows: Vehicle[]
   onEdit: (vehicle: Vehicle) => void
+  onDelete: (vehicle: Vehicle) => void
 }
 
-function FleetTable({ rows, onEdit }: FleetTableProps) {
+function FleetTable({ rows, onEdit, onDelete }: FleetTableProps) {
   return (
     <div className="table-wrap">
       <table className="data-table">
@@ -50,13 +51,22 @@ function FleetTable({ rows, onEdit }: FleetTableProps) {
               </td>
               <td>{formatDate(row.lastInspectionDate)}</td>
               <td>
-                <button
-                  className="more-btn"
-                  onClick={() => onEdit(row)}
-                  aria-label={`Editar ${row.plate}`}
-                >
-                  <Pencil size={15} />
-                </button>
+                <div className="row-actions">
+                  <button
+                    className="more-btn"
+                    onClick={() => onEdit(row)}
+                    aria-label={`Editar ${row.plate}`}
+                  >
+                    <Pencil size={15} />
+                  </button>
+                  <button
+                    className="more-btn more-btn-danger"
+                    onClick={() => onDelete(row)}
+                    aria-label={`Eliminar ${row.plate}`}
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
