@@ -3,7 +3,7 @@ import FleetHeader from '../components/fleet/FleetHeader'
 import FleetFilters from '../components/fleet/FleetFilters'
 import FleetTable from '../components/fleet/FleetTable'
 import FleetTableFooter from '../components/fleet/FleetTableFooter'
-import EditVehicleDialog from '../components/fleet/EditVehicleDialog'
+import VehicleFormDialog from '../components/fleet/VehicleFormDialog'
 import StateMessage from '../components/common/StateMessage'
 import { errorMessage } from '../lib/errorMessage'
 import { useVehicles } from '../hooks/useVehicles'
@@ -19,6 +19,7 @@ function FleetPage({ search }: { search: string }) {
   const [type, setType] = useState<VehicleType | ''>('')
   const [page, setPage] = useState(1)
   const [editing, setEditing] = useState<Vehicle | null>(null)
+  const [creating, setCreating] = useState(false)
 
   // Al cambiar el buscador del topbar, volver a la página 1 (patrón "ajustar estado al cambiar prop").
   const [prevSearch, setPrevSearch] = useState(search)
@@ -53,7 +54,7 @@ function FleetPage({ search }: { search: string }) {
   return (
     <div className="page">
       <section className="card table-card">
-        <FleetHeader />
+        <FleetHeader onNew={() => setCreating(true)} />
         <FleetFilters
           consortiums={consortiums}
           consortium={consortium}
@@ -109,12 +110,14 @@ function FleetPage({ search }: { search: string }) {
       </section>
 
       {editing ? (
-        <EditVehicleDialog
+        <VehicleFormDialog
           key={editing.id}
           vehicle={editing}
           onClose={() => setEditing(null)}
         />
       ) : null}
+
+      {creating ? <VehicleFormDialog onClose={() => setCreating(false)} /> : null}
     </div>
   )
 }

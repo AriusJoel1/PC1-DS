@@ -1,47 +1,60 @@
 import { useState, type FormEvent } from 'react'
 import { X } from 'lucide-react'
-import type { Vehicle, VehicleState, VehicleType, VehicleUpdate } from '../../services/vehicles'
+import type { Vehicle, VehicleCreate, VehicleState, VehicleType, VehicleUpdate } from '../../services/vehicles'
 import { useConsortiums } from '../../hooks/useConsortiums'
-import { useUpdateVehicle } from '../../hooks/useVehicles'
-import { ApiError } from '../../services/http'
-import './EditVehicleDialog.css'
+import { useCreateVehicle, useUpdateVehicle } from '../../hooks/useVehicles'
+import { errorMessage } from '../../lib/errorMessage'
+import './VehicleFormDialog.css'
 
 const STATES: VehicleState[] = ['Operativo', 'En Taller', 'Alerta']
 const TYPES: VehicleType[] = ['Bus Articulado', 'Alimentador']
 
-type EditVehicleDialogProps = {
-  vehicle: Vehicle
+const today = () => new Date().toISOString().slice(0, 10)
+
+type VehicleFormDialogProps = {
+  vehicle?: Vehicle | null // presente = editar; ausente = crear
   onClose: () => void
 }
 
-function EditVehicleDialog({ vehicle, onClose }: EditVehicleDialogProps) {
+function VehicleFormDialog({ vehicle, onClose }: VehicleFormDialogProps) {
+  const isEdit = vehicle != null
   const { data: consortiums = [] } = useConsortiums()
+  const create = useCreateVehicle()
   const update = useUpdateVehicle()
 
-  const [plate, setPlate] = useState(vehicle.plate)
-  const [type, setType] = useState<VehicleType>(vehicle.type)
-  const [consortium, setConsortium] = useState(vehicle.consortium)
-  const [km, setKm] = useState(String(vehicle.km))
-  const [state, setState] = useState<VehicleState>(vehicle.state)
-  const [date, setDate] = useState(vehicle.lastInspectionDate.slice(0, 10))
+  const [id, setId] = useState(vehicle?.id ?? '')
+  const [plate, setPlate] = useState(vehicle?.plate ?? '')
+  const [type, setType] = useState<VehicleType>(vehicle?.type ?? 'Bus Articulado')
+  const [consortium, setConsortium] = useState(vehicle?.consortium ?? '')
+  const [km, setKm] = useState(String(vehicle?.km ?? 0))
+  const [state, setState] = useState<VehicleState>(vehicle?.state ?? 'Operativo')
+  const [date, setDate] = useState(vehicle ? vehicle.lastInspectionDate.slice(0, 10) : today())
   const [error, setError] = useState<string | null>(null)
+
+  const pending = isEdit ? update.isPending : create.isPending
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError(null)
-    const patch: VehicleUpdate = {
-      plate,
-      type,
-      consortium,
-      km: Number(km),
-      state,
-      lastInspectionDate: date,
-    }
     try {
-      await update.mutateAsync({ id: vehicle.id, patch })
+      if (isEdit) {
+        const patch: VehicleUpdate = { plate, type, consortium, km: Number(km), state, lastInspectionDate: date }
+        await update.mutateAsync({ id: vehicle.id, patch })
+      } else {
+        const payload: VehicleCreate = {
+          id,
+          plate,
+          type,
+          consortium,
+          km: Number(km),
+          state,
+          lastInspectionDate: date,
+        }
+        await create.mutateAsync(payload)
+      }
       onClose()
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'No se pudo guardar la unidad.')
+      setError(errorMessage(err))
     }
   }
 
@@ -58,7 +71,7 @@ function EditVehicleDialog({ vehicle, onClose }: EditVehicleDialogProps) {
         aria-modal="true"
       >
         <div className="modal-head">
-          <h2>Editar unidad {vehicle.id}</h2>
+          <h2>{isEdit ? `Editar unidad ${vehicle.id}` : 'Nuevo vehículo'}</h2>
           <button
             className="icon-btn"
             onClick={onClose}
@@ -72,11 +85,24 @@ function EditVehicleDialog({ vehicle, onClose }: EditVehicleDialogProps) {
           className="modal-form"
           onSubmit={onSubmit}
         >
+          {!isEdit ? (
+            <label className="modal-field">
+              <span>ID de unidad</span>
+              <input
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+                placeholder="Ej. ART-1042"
+                required
+              />
+            </label>
+          ) : null}
+
           <label className="modal-field">
             <span>Placa</span>
             <input
               value={plate}
               onChange={(e) => setPlate(e.target.value)}
+              placeholder="Ej. A2F-741"
               required
             />
           </label>
@@ -103,9 +129,16 @@ function EditVehicleDialog({ vehicle, onClose }: EditVehicleDialogProps) {
             <select
               value={consortium}
               onChange={(e) => setConsortium(e.target.value)}
+              required
             >
+              <option
+                value=""
+                disabled
+              >
+                Selecciona un consorcio
+              </option>
               {/* Si el consorcio actual no está en el catálogo, lo conservamos como opción. */}
-              {!consortiums.some((c) => c.name === consortium) ? (
+              {consortium && !consortiums.some((c) => c.name === consortium) ? (
                 <option value={consortium}>{consortium}</option>
               ) : null}
               {consortiums.map((c) => (
@@ -170,9 +203,9 @@ function EditVehicleDialog({ vehicle, onClose }: EditVehicleDialogProps) {
             <button
               type="submit"
               className="btn btn-primary"
-              disabled={update.isPending}
+              disabled={pending}
             >
-              {update.isPending ? 'Guardando…' : 'Guardar cambios'}
+              {pending ? 'Guardando…' : isEdit ? 'Guardar cambios' : 'Crear vehículo'}
             </button>
           </div>
         </form>
@@ -181,4 +214,4 @@ function EditVehicleDialog({ vehicle, onClose }: EditVehicleDialogProps) {
   )
 }
 
-export default EditVehicleDialog
+export default VehicleFormDialog

@@ -1,6 +1,10 @@
 import { Plus } from 'lucide-react';
 
-function FleetHeader() {
+type FleetHeaderProps = {
+  onNew: () => void;
+};
+
+function FleetHeader({ onNew }: FleetHeaderProps) {
   return (
     <div className="section-head">
       <div>
@@ -10,7 +14,7 @@ function FleetHeader() {
         </p>
       </div>
 
-      <button className="btn btn-primary">
+      <button className="btn btn-primary" onClick={onNew}>
         <Plus size={16} />
         Nuevo Vehículo
       </button>
