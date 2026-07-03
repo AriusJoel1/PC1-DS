@@ -34,7 +34,6 @@ function DashboardHero({ kpis }: DashboardHeroProps) {
             <Download size={16} />
             {exportGtfs.isPending ? 'Generando…' : 'Descargar Reporte'}
           </button>
-          <button className="btn btn-primary">+ Nueva Directiva</button>
         </div>
 
         {exportGtfs.isError ? (

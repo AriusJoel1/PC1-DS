@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { BusFront, CircleAlert, HelpCircle, LogOut, Menu, Search, UserCircle2 } from 'lucide-react'
+import { BusFront, CircleAlert, LogOut, Menu, Search, UserCircle2 } from 'lucide-react'
 import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 
 import { navItems } from './data/metrofloataMock'
@@ -105,9 +105,9 @@ function App() {
 
             <div className="topbar-right">
               <AlertsBell />
-              <button className="icon-btn">
+              {/* <button className="icon-btn">
                 <HelpCircle size={17} />
-              </button>
+              </button> */}
               {user ? <span className="user-name">{user.name}</span> : null}
               <div
                 className="avatar"
