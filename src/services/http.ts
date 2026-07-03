@@ -57,7 +57,7 @@ export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
 
   let res = await doFetch()
 
-  // Access token expirado → intenta refrescar una vez y reintenta.
+  // Access token expirado -> intenta refrescar una vez y reintenta.
   if (res.status === 401 && accessToken) {
     if (await refreshAccessToken()) res = await doFetch()
   }

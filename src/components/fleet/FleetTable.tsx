@@ -18,6 +18,7 @@ function FleetTable({ rows, onEdit, onDelete }: FleetTableProps) {
             <th>Placa / ID</th>
             <th>Tipo</th>
             <th>Consorcio</th>
+            <th>Ruta</th>
             <th>Kilometraje</th>
             <th>Estado</th>
             <th>Últ. mantenimiento</th>
@@ -34,6 +35,7 @@ function FleetTable({ rows, onEdit, onDelete }: FleetTableProps) {
               </td>
               <td>{row.type}</td>
               <td>{row.consortium}</td>
+              <td>{row.currentRouteCode ?? '—'}</td>
               <td>
                 <div className="km-cell">
                   <span>{formatKm(row.km)}</span>

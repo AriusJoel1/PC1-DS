@@ -24,7 +24,7 @@ export interface RecentAlert {
   id: string
   title: string
   text: string
-  time: string // ISO timestamp → formatear en el front
+  time: string // ISO timestamp -> formatear en el front
   tone: 'danger' | 'warning'
 }
 

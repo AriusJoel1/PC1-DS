@@ -10,9 +10,10 @@ export interface Vehicle {
   plate: string
   type: VehicleType
   consortium: string
-  km: number // numérico → formatear en el front (km.toLocaleString())
+  km: number // numérico -> formatear en el front (km.toLocaleString())
   state: VehicleState
-  lastInspectionDate: string // ISO date → formatear en el front
+  lastInspectionDate: string // ISO date -> formatear en el front
+  currentRouteCode: string | null // código de ruta asociada (null = sin asignar)
 }
 
 export interface ListVehiclesParams {

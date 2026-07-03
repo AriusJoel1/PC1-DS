@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { X } from 'lucide-react'
 import type { Vehicle, VehicleCreate, VehicleState, VehicleType, VehicleUpdate } from '../../services/vehicles'
 import { useConsortiums } from '../../hooks/useConsortiums'
+import { useRoutes } from '../../hooks/useRoutes'
 import { useCreateVehicle, useUpdateVehicle } from '../../hooks/useVehicles'
 import { errorMessage } from '../../lib/errorMessage'
 import './VehicleFormDialog.css'
@@ -19,6 +20,8 @@ type VehicleFormDialogProps = {
 function VehicleFormDialog({ vehicle, onClose }: VehicleFormDialogProps) {
   const isEdit = vehicle != null
   const { data: consortiums = [] } = useConsortiums()
+  const { data: routesPage } = useRoutes({ pageSize: 100 })
+  const routes = routesPage?.data ?? []
   const create = useCreateVehicle()
   const update = useUpdateVehicle()
 
@@ -29,6 +32,7 @@ function VehicleFormDialog({ vehicle, onClose }: VehicleFormDialogProps) {
   const [km, setKm] = useState(String(vehicle?.km ?? 0))
   const [state, setState] = useState<VehicleState>(vehicle?.state ?? 'Operativo')
   const [date, setDate] = useState(vehicle ? vehicle.lastInspectionDate.slice(0, 10) : today())
+  const [routeCode, setRouteCode] = useState(vehicle?.currentRouteCode ?? '')
   const [error, setError] = useState<string | null>(null)
 
   const pending = isEdit ? update.isPending : create.isPending
@@ -37,8 +41,9 @@ function VehicleFormDialog({ vehicle, onClose }: VehicleFormDialogProps) {
     e.preventDefault()
     setError(null)
     try {
+      const currentRouteCode = routeCode || null
       if (isEdit) {
-        const patch: VehicleUpdate = { plate, type, consortium, km: Number(km), state, lastInspectionDate: date }
+        const patch: VehicleUpdate = { plate, type, consortium, km: Number(km), state, lastInspectionDate: date, currentRouteCode }
         await update.mutateAsync({ id: vehicle.id, patch })
       } else {
         const payload: VehicleCreate = {
@@ -49,6 +54,7 @@ function VehicleFormDialog({ vehicle, onClose }: VehicleFormDialogProps) {
           km: Number(km),
           state,
           lastInspectionDate: date,
+          currentRouteCode,
         }
         await create.mutateAsync(payload)
       }
@@ -147,6 +153,27 @@ function VehicleFormDialog({ vehicle, onClose }: VehicleFormDialogProps) {
                   value={c.name}
                 >
                   {c.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="modal-field">
+            <span>Ruta asignada</span>
+            <select
+              value={routeCode}
+              onChange={(e) => setRouteCode(e.target.value)}
+            >
+              <option value="">Sin ruta asignada</option>
+              {routeCode && !routes.some((r) => r.code === routeCode) ? (
+                <option value={routeCode}>{routeCode}</option>
+              ) : null}
+              {routes.map((r) => (
+                <option
+                  key={r.code}
+                  value={r.code}
+                >
+                  {r.code} — {r.name}
                 </option>
               ))}
             </select>

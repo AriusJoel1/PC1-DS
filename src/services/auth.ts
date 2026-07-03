@@ -25,7 +25,7 @@ export const me = () => api<User>('/auth/me')
 
 /**
  * Restaura la sesión al cargar la app: la cookie httpOnly de refresh sobrevive a la recarga,
- * pero el access token (en memoria) no. `refresh` → `me` rehidrata sin pedir login de nuevo.
+ * pero el access token (en memoria) no. `refresh` -> `me` rehidrata sin pedir login de nuevo.
  */
 export async function restoreSession(): Promise<User | null> {
   const ok = await refreshAccessToken()
