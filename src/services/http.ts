@@ -44,12 +44,14 @@ export function toQuery(params: Record<string, unknown>): string {
 }
 
 export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
+  const isFormData = typeof FormData !== 'undefined' && init.body instanceof FormData
+
   const doFetch = () =>
     fetch(`${API_URL}${path}`, {
       ...init,
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json',
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
         ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
         ...init.headers,
       },

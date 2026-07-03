@@ -1,9 +1,11 @@
-import { useState, type FormEvent } from 'react'
-import { X } from 'lucide-react'
+import { useState, type ChangeEvent, type FormEvent } from 'react'
+import { ImagePlus, X } from 'lucide-react'
 import type { Route, RouteCreate, RouteState, RouteType, RouteUpdate } from '../../services/routes'
-import { useCreateRoute, useUpdateRoute } from '../../hooks/useRoutes'
+import { useCreateRoute, useUpdateRoute, useUploadRouteImage } from '../../hooks/useRoutes'
 import { errorMessage } from '../../lib/errorMessage'
 import './RouteFormDialog.css'
+
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024 // 5 MB (límite del backend)
 
 const TYPES: RouteType[] = ['Troncal', 'Expreso', 'Alimentador']
 const STATES: RouteState[] = ['Activa', 'En Revisión', 'Suspendida']
@@ -17,6 +19,7 @@ function RouteFormDialog({ route, onClose }: RouteFormDialogProps) {
   const isEdit = route != null
   const create = useCreateRoute()
   const update = useUpdateRoute()
+  const uploadImage = useUploadRouteImage()
 
   const [code, setCode] = useState(route?.code ?? '')
   const [name, setName] = useState(route?.name ?? '')
@@ -25,14 +28,34 @@ function RouteFormDialog({ route, onClose }: RouteFormDialogProps) {
   const [frequency, setFrequency] = useState(String(route?.frequencyMinutes ?? ''))
   const [buses, setBuses] = useState(String(route?.buses ?? 0))
   const [state, setState] = useState<RouteState>(route?.state ?? 'Activa')
+  const [file, setFile] = useState<File | null>(null)
+  const [preview, setPreview] = useState<string | null>(route?.imageUrl ?? null)
   const [error, setError] = useState<string | null>(null)
 
   const pending = isEdit ? update.isPending : create.isPending
+  const busy = pending || uploadImage.isPending
+
+  const onPickImage = (e: ChangeEvent<HTMLInputElement>) => {
+    const picked = e.target.files?.[0] ?? null
+    setError(null)
+    if (!picked) return
+    if (!picked.type.startsWith('image/')) {
+      setError('El archivo debe ser una imagen.')
+      return
+    }
+    if (picked.size > MAX_IMAGE_BYTES) {
+      setError('La imagen supera el máximo de 5 MB.')
+      return
+    }
+    setFile(picked)
+    setPreview(URL.createObjectURL(picked)) // vista previa local
+  }
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
     setError(null)
     try {
+      let targetCode = route?.code ?? code
       if (isEdit) {
         const patch: RouteUpdate = {
           name,
@@ -53,8 +76,10 @@ function RouteFormDialog({ route, onClose }: RouteFormDialogProps) {
           buses: Number(buses),
           state,
         }
-        await create.mutateAsync(payload)
+        const created = await create.mutateAsync(payload)
+        targetCode = created.code
       }
+      if (file) await uploadImage.mutateAsync({ code: targetCode, file })
       onClose()
     } catch (err) {
       setError(errorMessage(err))
@@ -182,6 +207,32 @@ function RouteFormDialog({ route, onClose }: RouteFormDialogProps) {
             </label>
           </div>
 
+          <div className="modal-field">
+            <span>Imagen representativa (opcional)</span>
+            <div className="image-field">
+              {preview ? (
+                <img
+                  className="image-preview"
+                  src={preview}
+                  alt="Vista previa de la ruta"
+                />
+              ) : (
+                <div className="image-placeholder">
+                  <ImagePlus size={20} />
+                </div>
+              )}
+              <label className="btn btn-ghost image-pick">
+                {preview ? 'Cambiar imagen' : 'Subir imagen'}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={onPickImage}
+                  hidden
+                />
+              </label>
+            </div>
+          </div>
+
           {error ? <div className="modal-error">{error}</div> : null}
 
           <div className="modal-actions">
@@ -195,9 +246,9 @@ function RouteFormDialog({ route, onClose }: RouteFormDialogProps) {
             <button
               type="submit"
               className="btn btn-primary"
-              disabled={pending}
+              disabled={busy}
             >
-              {pending ? 'Guardando…' : isEdit ? 'Guardar cambios' : 'Crear ruta'}
+              {busy ? 'Guardando…' : isEdit ? 'Guardar cambios' : 'Crear ruta'}
             </button>
           </div>
         </form>

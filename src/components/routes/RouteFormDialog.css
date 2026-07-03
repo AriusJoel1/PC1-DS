@@ -99,3 +99,30 @@
   grid-template-columns: 1fr 1fr;
   gap: 12px;
 }
+
+.image-field {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.image-preview,
+.image-placeholder {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
+  object-fit: cover;
+  background: #f8fafc;
+}
+
+.image-placeholder {
+  display: grid;
+  place-items: center;
+  color: #94a3b8;
+}
+
+.image-pick {
+  cursor: pointer;
+}

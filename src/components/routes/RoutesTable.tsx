@@ -1,4 +1,4 @@
-import { Eye, Pencil, Trash2 } from 'lucide-react'
+import { Eye, ImageOff, Pencil, Trash2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import type { Route } from '../../services/routes'
 import './RoutesTable.css'
@@ -32,8 +32,24 @@ function RoutesTable({ rows, onSelect, onEdit, onDelete }: RoutesTableProps) {
           {rows.map((row) => (
             <tr key={row.code}>
               <td>
-                <div className="cell-main">{row.code}</div>
-                <div className="cell-sub">{row.name}</div>
+                <div className="route-cell">
+                  {row.imageUrl ? (
+                    <img
+                      className="route-thumb"
+                      src={row.imageUrl}
+                      alt={`Ruta ${row.code}`}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="route-thumb route-thumb-empty">
+                      <ImageOff size={16} />
+                    </div>
+                  )}
+                  <div>
+                    <div className="cell-main">{row.code}</div>
+                    <div className="cell-sub">{row.name}</div>
+                  </div>
+                </div>
               </td>
               <td>
                 <span className={`type-pill type-${row.type.toLowerCase()}`}>{row.type}</span>

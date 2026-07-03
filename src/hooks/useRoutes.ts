@@ -9,6 +9,7 @@ import {
   routesSummary,
   updateRoute,
   updateStop,
+  uploadRouteImage,
   type ListRoutesParams,
   type RouteCreate,
   type RouteUpdate,
@@ -66,6 +67,14 @@ export function useDeleteRoute() {
   return useMutation({
     mutationFn: (code: string) => deleteRoute(code),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['routes'] }),
+  })
+}
+
+export function useUploadRouteImage() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ code, file }: { code: string; file: File }) => uploadRouteImage(code, file),
+    onSuccess: (_data, { code }) => invalidateRoute(qc, code),
   })
 }
 

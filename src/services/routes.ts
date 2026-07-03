@@ -12,6 +12,7 @@ export interface Route {
   frequencyMinutes: number
   buses: number
   state: RouteState
+  imageUrl: string | null // imagen representativa (null = sin imagen)
 }
 
 export interface Stop {
@@ -40,6 +41,7 @@ export interface RouteDetail {
   frequencyMinutes: number
   buses: number
   state: RouteState
+  imageUrl: string | null
   stops: Stop[]
 }
 
@@ -83,6 +85,12 @@ export const updateRoute = (code: string, patch: RouteUpdate) =>
   api<Route>(`/routes/${code}`, { method: 'PATCH', body: JSON.stringify(patch) })
 
 export const deleteRoute = (code: string) => api<void>(`/routes/${code}`, { method: 'DELETE' })
+
+export function uploadRouteImage(code: string, file: File): Promise<Route> {
+  const form = new FormData()
+  form.append('image', file)
+  return api<Route>(`/routes/${code}/image`, { method: 'POST', body: form })
+}
 
 export const getRouteStops = (code: string) => api<Stop[]>(`/routes/${code}/stops`)
 
