@@ -21,6 +21,7 @@ export interface ListVehiclesParams {
   state?: VehicleState
   type?: VehicleType
   consortium?: string
+  route?: string
   page?: number
   pageSize?: number
 }

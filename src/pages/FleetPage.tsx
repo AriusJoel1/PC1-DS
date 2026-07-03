@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import FleetHeader from '../components/fleet/FleetHeader'
 import FleetFilters from '../components/fleet/FleetFilters'
 import FleetTable from '../components/fleet/FleetTable'
@@ -9,12 +10,16 @@ import ConfirmDialog from '../components/common/ConfirmDialog'
 import { errorMessage } from '../lib/errorMessage'
 import { useDeleteVehicle, useVehicles } from '../hooks/useVehicles'
 import { useConsortiums } from '../hooks/useConsortiums'
+import { useRoutes } from '../hooks/useRoutes'
 import { useDebouncedValue } from '../hooks/useDebouncedValue'
 import type { Vehicle, VehicleState, VehicleType } from '../services/vehicles'
 
 const PAGE_SIZE = 10
 
 function FleetPage({ search }: { search: string }) {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const route = searchParams.get('route') ?? ''
+
   const [consortium, setConsortium] = useState('')
   const [state, setState] = useState<VehicleState | ''>('')
   const [type, setType] = useState<VehicleType | ''>('')
@@ -45,11 +50,14 @@ function FleetPage({ search }: { search: string }) {
   const debouncedSearch = useDebouncedValue(search)
 
   const { data: consortiums = [] } = useConsortiums()
+  const { data: routesPage } = useRoutes({ pageSize: 100 })
+  const routes = routesPage?.data ?? []
   const { data, isLoading, isError, error } = useVehicles({
     search: debouncedSearch || undefined,
     state: state || undefined,
     type: type || undefined,
     consortium: consortium || undefined,
+    route: route || undefined,
     page,
     pageSize: PAGE_SIZE,
   })
@@ -58,10 +66,25 @@ function FleetPage({ search }: { search: string }) {
   const total = data?.meta.total ?? 0
 
   const resetToFirstPage = () => setPage(1)
+
+  // El filtro de ruta se refleja en la URL para que sea enlazable desde /rutas.
+  const setRoute = (value: string) => {
+    setSearchParams(
+      (prev) => {
+        if (value) prev.set('route', value)
+        else prev.delete('route')
+        return prev
+      },
+      { replace: true },
+    )
+    resetToFirstPage()
+  }
+
   const clearFilters = () => {
     setConsortium('')
     setState('')
     setType('')
+    setRoute('')
     resetToFirstPage()
   }
 
@@ -71,9 +94,11 @@ function FleetPage({ search }: { search: string }) {
         <FleetHeader onNew={() => setCreating(true)} />
         <FleetFilters
           consortiums={consortiums}
+          routes={routes}
           consortium={consortium}
           state={state}
           type={type}
+          route={route}
           onConsortium={(v) => {
             setConsortium(v)
             resetToFirstPage()
@@ -86,6 +111,7 @@ function FleetPage({ search }: { search: string }) {
             setType(v)
             resetToFirstPage()
           }}
+          onRoute={setRoute}
           onClear={clearFilters}
         />
 

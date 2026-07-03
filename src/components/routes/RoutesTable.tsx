@@ -1,4 +1,5 @@
 import { Eye } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import type { Route } from '../../services/routes'
 import './RoutesTable.css'
 
@@ -8,6 +9,7 @@ type RoutesTableProps = {
 }
 
 function RoutesTable({ rows, onSelect }: RoutesTableProps) {
+  const navigate = useNavigate()
   return (
     <div className="table-wrap">
       <table className="data-table">
@@ -37,7 +39,15 @@ function RoutesTable({ rows, onSelect }: RoutesTableProps) {
               <td>{row.stops}</td>
               <td>{row.length} km</td>
               <td>{row.frequencyMinutes} min</td>
-              <td>{row.buses}</td>
+              <td>
+                <button
+                  className="link-btn"
+                  onClick={() => navigate(`/flota?route=${encodeURIComponent(row.code)}`)}
+                  title={`Ver buses de la ruta ${row.code}`}
+                >
+                  {row.buses}
+                </button>
+              </td>
               <td>
                 <span
                   className={`status-pill ${
