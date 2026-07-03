@@ -1,7 +1,7 @@
 import type { LucideIcon } from 'lucide-react'
-import { BarChart3, BusFront, Home, MapPinned, Settings, SignalHigh } from 'lucide-react'
+import { BarChart3, BusFront, Home, MapPinned, Settings, SignalHigh, Wrench } from 'lucide-react'
 
-export type SectionId = 'inicio' | 'flota' | 'rutas' | 'monitoreo'
+export type SectionId = 'inicio' | 'flota' | 'rutas' | 'monitoreo' | 'mantenimiento'
 
 export type NavItem = {
   id: SectionId
@@ -14,6 +14,7 @@ export const navItems: NavItem[] = [
   { id: 'flota', label: 'Flota', icon: BusFront },
   { id: 'rutas', label: 'Rutas', icon: MapPinned as LucideIcon },
   { id: 'monitoreo', label: 'Monitoreo', icon: SignalHigh },
+  { id: 'mantenimiento', label: 'Mantenimiento', icon: Wrench },
 ]
 
 export const quickActions = [
