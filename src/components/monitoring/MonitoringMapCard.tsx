@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { CircleMarker, MapContainer, Polyline, TileLayer, Tooltip, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useUnitPosition, useUnitStatus } from '../../hooks/useMonitoring'
+import { busColor } from '../../lib/busStatus'
 import './MonitoringMapCard.css'
 
 const LIMA_CENTER: [number, number] = [-12.05, -77.04]
@@ -79,7 +80,12 @@ function MonitoringMapCard({ selectedUnit }: MonitoringMapCardProps) {
             <CircleMarker
               center={busPos}
               radius={9}
-              pathOptions={{ color: '#fff', weight: 3, fillColor: '#1d4ed8', fillOpacity: 1 }}
+              pathOptions={{
+                color: '#fff',
+                weight: 3,
+                fillColor: busColor(status?.speedKmh ?? 0),
+                fillOpacity: 1,
+              }}
             >
               <Tooltip
                 permanent
