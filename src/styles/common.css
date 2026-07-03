@@ -77,6 +77,26 @@
   background: #334155;
 }
 
+.btn-secondary {
+  border: 1px solid var(--line);
+  background: #fff;
+  color: #334155;
+}
+
+.btn-secondary:hover {
+  background: #f1f5f9;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.routes-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
 .btn-ghost {
   border: 1px solid var(--line);
   background: #fff;

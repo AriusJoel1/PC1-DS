@@ -6,10 +6,12 @@ import RouteDetailDrawer from '../components/routes/RouteDetailDrawer'
 import StateMessage from '../components/common/StateMessage'
 import { errorMessage } from '../lib/errorMessage'
 import { useRoutes, useRoutesSummary } from '../hooks/useRoutes'
+import { useGtfsExport } from '../hooks/useGtfsExport'
 
 function RoutesPage() {
   const { data, isLoading, isError, error } = useRoutes({ pageSize: 100 })
   const { data: summary } = useRoutesSummary()
+  const gtfsExport = useGtfsExport()
   const [selectedCode, setSelectedCode] = useState<string | null>(null)
 
   const rows = data?.data ?? []
@@ -18,7 +20,17 @@ function RoutesPage() {
   return (
     <div className="page">
       <section className="card table-card">
-        <RoutesHeader />
+        <RoutesHeader
+          onExportGtfs={() => gtfsExport.mutate()}
+          exporting={gtfsExport.isPending}
+        />
+        {gtfsExport.isError ? (
+          <StateMessage
+            variant="error"
+            title="No se pudo exportar el GTFS"
+            detail={errorMessage(gtfsExport.error)}
+          />
+        ) : null}
         <RoutesSummary
           total={summary?.total ?? 0}
           active={summary?.active ?? 0}
