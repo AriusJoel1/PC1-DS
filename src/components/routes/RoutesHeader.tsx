@@ -2,9 +2,10 @@ import { Plus } from 'lucide-react';
 
 type RoutesHeaderProps = {
   onNew: () => void;
+  canWrite: boolean;
 };
 
-function RoutesHeader({ onNew }: RoutesHeaderProps) {
+function RoutesHeader({ onNew, canWrite }: RoutesHeaderProps) {
   return (
     <div className="section-head">
       <div>
@@ -14,10 +15,12 @@ function RoutesHeader({ onNew }: RoutesHeaderProps) {
         </p>
       </div>
 
-      <button className="btn btn-primary" onClick={onNew}>
-        <Plus size={16} />
-        Nueva Ruta
-      </button>
+      {canWrite ? (
+        <button className="btn btn-primary" onClick={onNew}>
+          <Plus size={16} />
+          Nueva Ruta
+        </button>
+      ) : null}
     </div>
   );
 }

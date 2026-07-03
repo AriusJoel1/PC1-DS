@@ -8,9 +8,10 @@ type RoutesTableProps = {
   onSelect: (code: string) => void
   onEdit: (route: Route) => void
   onDelete: (route: Route) => void
+  canWrite: boolean
 }
 
-function RoutesTable({ rows, onSelect, onEdit, onDelete }: RoutesTableProps) {
+function RoutesTable({ rows, onSelect, onEdit, onDelete, canWrite }: RoutesTableProps) {
   const navigate = useNavigate()
   return (
     <div className="table-wrap">
@@ -84,20 +85,24 @@ function RoutesTable({ rows, onSelect, onEdit, onDelete }: RoutesTableProps) {
                   >
                     <Eye size={15} />
                   </button>
-                  <button
-                    className="more-btn"
-                    onClick={() => onEdit(row)}
-                    aria-label={`Editar ruta ${row.code}`}
-                  >
-                    <Pencil size={15} />
-                  </button>
-                  <button
-                    className="more-btn more-btn-danger"
-                    onClick={() => onDelete(row)}
-                    aria-label={`Eliminar ruta ${row.code}`}
-                  >
-                    <Trash2 size={15} />
-                  </button>
+                  {canWrite ? (
+                    <>
+                      <button
+                        className="more-btn"
+                        onClick={() => onEdit(row)}
+                        aria-label={`Editar ruta ${row.code}`}
+                      >
+                        <Pencil size={15} />
+                      </button>
+                      <button
+                        className="more-btn more-btn-danger"
+                        onClick={() => onDelete(row)}
+                        aria-label={`Eliminar ruta ${row.code}`}
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </>
+                  ) : null}
                 </div>
               </td>
             </tr>

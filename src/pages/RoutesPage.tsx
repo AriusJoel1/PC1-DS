@@ -8,11 +8,13 @@ import ConfirmDialog from '../components/common/ConfirmDialog'
 import StateMessage from '../components/common/StateMessage'
 import { errorMessage } from '../lib/errorMessage'
 import { useDeleteRoute, useRoutes, useRoutesSummary } from '../hooks/useRoutes'
+import { usePermissions } from '../auth/usePermissions'
 import type { Route } from '../services/routes'
 
 function RoutesPage() {
   const { data, isLoading, isError, error } = useRoutes({ pageSize: 100 })
   const { data: summary } = useRoutesSummary()
+  const { canWrite } = usePermissions()
   const [selectedCode, setSelectedCode] = useState<string | null>(null)
   const [creating, setCreating] = useState(false)
   const [editing, setEditing] = useState<Route | null>(null)
@@ -36,7 +38,7 @@ function RoutesPage() {
   return (
     <div className="page">
       <section className="card table-card">
-        <RoutesHeader onNew={() => setCreating(true)} />
+        <RoutesHeader onNew={() => setCreating(true)} canWrite={canWrite} />
         <RoutesSummary
           total={summary?.total ?? 0}
           active={summary?.active ?? 0}
@@ -66,6 +68,7 @@ function RoutesPage() {
             onSelect={setSelectedCode}
             onEdit={setEditing}
             onDelete={setDeleting}
+            canWrite={canWrite}
           />
         )}
 
