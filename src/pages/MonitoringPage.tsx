@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import MonitoringMapCard from '../components/monitoring/MonitoringMapCard'
 import MonitoringUnitDetailsCard from '../components/monitoring/MonitoringUnitDetailsCard'
-import MonitoringRouteCard from '../components/monitoring/MonitoringRouteCard'
+// import MonitoringRouteCard from '../components/monitoring/MonitoringRouteCard'
 import MonitoringVehicleToggleCard from '../components/monitoring/MonitoringVehicleToggleCard'
 import { useUnits, useUnitStream } from '../hooks/useMonitoring'
 
@@ -20,7 +20,7 @@ function MonitoringPage() {
 
       <aside className="monitor-side">
         <MonitoringUnitDetailsCard selectedVehicle={selectedUnit} />
-        <MonitoringRouteCard />
+        {/* <MonitoringRouteCard /> */}
         <MonitoringVehicleToggleCard
           units={units}
           selected={selectedUnit}
