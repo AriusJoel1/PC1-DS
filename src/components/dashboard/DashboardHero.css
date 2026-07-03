@@ -2,6 +2,12 @@
   padding: 22px;
 }
 
+.hero-export-error {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: #b91c1c;
+}
+
 .hero-head {
   display: flex;
   justify-content: space-between;

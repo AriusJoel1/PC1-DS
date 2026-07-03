@@ -1,3 +1,5 @@
+import { Download } from 'lucide-react'
+import { useExportGtfs } from '../../hooks/useExportGtfs'
 import './DashboardHero.css'
 
 type KpiItem = {
@@ -13,6 +15,8 @@ type DashboardHeroProps = {
 }
 
 function DashboardHero({ kpis }: DashboardHeroProps) {
+  const exportGtfs = useExportGtfs()
+
   return (
     <section className="card hero-card">
       <div className="hero-head">
@@ -22,9 +26,20 @@ function DashboardHero({ kpis }: DashboardHeroProps) {
         </div>
 
         <div className="hero-actions">
-          <button className="btn btn-ghost">Descargar Reporte</button>
+          <button
+            className="btn btn-ghost"
+            onClick={() => exportGtfs.mutate()}
+            disabled={exportGtfs.isPending}
+          >
+            <Download size={16} />
+            {exportGtfs.isPending ? 'Generando…' : 'Descargar Reporte'}
+          </button>
           <button className="btn btn-primary">+ Nueva Directiva</button>
         </div>
+
+        {exportGtfs.isError ? (
+          <p className="hero-export-error">No se pudo generar el reporte GTFS. Intenta de nuevo.</p>
+        ) : null}
       </div>
 
       <div className="kpi-grid">
