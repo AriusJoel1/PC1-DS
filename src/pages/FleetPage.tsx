@@ -9,6 +9,7 @@ import StateMessage from '../components/common/StateMessage'
 import ConfirmDialog from '../components/common/ConfirmDialog'
 import { errorMessage } from '../lib/errorMessage'
 import { useDeleteVehicle, useVehicles } from '../hooks/useVehicles'
+import { usePermissions } from '../auth/usePermissions'
 import { useConsortiums } from '../hooks/useConsortiums'
 import { useRoutes } from '../hooks/useRoutes'
 import { useDebouncedValue } from '../hooks/useDebouncedValue'
@@ -19,6 +20,7 @@ const PAGE_SIZE = 10
 function FleetPage({ search }: { search: string }) {
   const [searchParams, setSearchParams] = useSearchParams()
   const route = searchParams.get('route') ?? ''
+  const { canWrite } = usePermissions()
 
   const [consortium, setConsortium] = useState('')
   const [state, setState] = useState<VehicleState | ''>('')
@@ -91,7 +93,7 @@ function FleetPage({ search }: { search: string }) {
   return (
     <div className="page">
       <section className="card table-card">
-        <FleetHeader onNew={() => setCreating(true)} />
+        <FleetHeader onNew={() => setCreating(true)} canWrite={canWrite} />
         <FleetFilters
           consortiums={consortiums}
           routes={routes}
@@ -137,6 +139,7 @@ function FleetPage({ search }: { search: string }) {
             rows={rows}
             onEdit={setEditing}
             onDelete={setDeleting}
+            canWrite={canWrite}
           />
         )}
 

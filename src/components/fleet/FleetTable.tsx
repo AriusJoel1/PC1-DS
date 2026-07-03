@@ -7,9 +7,10 @@ type FleetTableProps = {
   rows: Vehicle[]
   onEdit: (vehicle: Vehicle) => void
   onDelete: (vehicle: Vehicle) => void
+  canWrite: boolean
 }
 
-function FleetTable({ rows, onEdit, onDelete }: FleetTableProps) {
+function FleetTable({ rows, onEdit, onDelete, canWrite }: FleetTableProps) {
   return (
     <div className="table-wrap">
       <table className="data-table">
@@ -53,22 +54,26 @@ function FleetTable({ rows, onEdit, onDelete }: FleetTableProps) {
               </td>
               <td>{formatDate(row.lastInspectionDate)}</td>
               <td>
-                <div className="row-actions">
-                  <button
-                    className="more-btn"
-                    onClick={() => onEdit(row)}
-                    aria-label={`Editar ${row.plate}`}
-                  >
-                    <Pencil size={15} />
-                  </button>
-                  <button
-                    className="more-btn more-btn-danger"
-                    onClick={() => onDelete(row)}
-                    aria-label={`Eliminar ${row.plate}`}
-                  >
-                    <Trash2 size={15} />
-                  </button>
-                </div>
+                {canWrite ? (
+                  <div className="row-actions">
+                    <button
+                      className="more-btn"
+                      onClick={() => onEdit(row)}
+                      aria-label={`Editar ${row.plate}`}
+                    >
+                      <Pencil size={15} />
+                    </button>
+                    <button
+                      className="more-btn more-btn-danger"
+                      onClick={() => onDelete(row)}
+                      aria-label={`Eliminar ${row.plate}`}
+                    >
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                ) : (
+                  <span className="cell-sub">Solo lectura</span>
+                )}
               </td>
             </tr>
           ))}
