@@ -1,6 +1,7 @@
-import { MapPin, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import { useRoute } from '../../hooks/useRoutes'
 import StateMessage from '../common/StateMessage'
+import RouteStopsEditor from './RouteStopsEditor'
 import { errorMessage } from '../../lib/errorMessage'
 import './RouteDetailDrawer.css'
 
@@ -79,25 +80,10 @@ function RouteDetailDrawer({ code, onClose }: RouteDetailDrawerProps) {
             </div>
 
             <h3 className="drawer-section-title">Paradas ({data.stops.length})</h3>
-            <ol className="drawer-stops">
-              {data.stops.map((stop) => (
-                <li
-                  key={stop.id}
-                  className="drawer-stop"
-                >
-                  <span className="drawer-stop-order">{stop.order}</span>
-                  <div className="drawer-stop-info">
-                    <strong>{stop.name}</strong>
-                    {stop.lat != null && stop.lng != null ? (
-                      <span className="drawer-stop-coords">
-                        <MapPin size={12} />
-                        {stop.lat.toFixed(4)}, {stop.lng.toFixed(4)}
-                      </span>
-                    ) : null}
-                  </div>
-                </li>
-              ))}
-            </ol>
+            <RouteStopsEditor
+              code={data.code}
+              stops={data.stops}
+            />
           </div>
         ) : null}
       </aside>

@@ -22,6 +22,15 @@ export interface Stop {
   lng: number | null
 }
 
+export interface StopCreate {
+  name: string
+  order?: number
+  lat?: number | null
+  lng?: number | null
+}
+
+export type StopUpdate = Partial<StopCreate>
+
 export interface RouteDetail {
   code: string
   name: string
@@ -56,3 +65,11 @@ export const routesSummary = () => api<RoutesSummary>('/routes/summary')
 export const getRoute = (code: string) => api<RouteDetail>(`/routes/${code}`)
 
 export const getRouteStops = (code: string) => api<Stop[]>(`/routes/${code}/stops`)
+
+export const createStop = (code: string, stop: StopCreate) =>
+  api<Stop>(`/routes/${code}/stops`, { method: 'POST', body: JSON.stringify(stop) })
+
+export const updateStop = (id: string, patch: StopUpdate) =>
+  api<Stop>(`/stops/${id}`, { method: 'PATCH', body: JSON.stringify(patch) })
+
+export const deleteStop = (id: string) => api<void>(`/stops/${id}`, { method: 'DELETE' })

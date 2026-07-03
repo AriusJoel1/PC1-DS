@@ -1,0 +1,73 @@
+.stops-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.drawer-stop .stop-actions {
+  margin-left: auto;
+}
+
+.stop-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.more-btn-danger:hover {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.stop-edit-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.stop-edit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  flex: 1;
+}
+
+/* El nombre ocupa toda la fila; orden/lat/lng se reparten la siguiente. */
+.stop-edit-grid > .stop-input:not(.stop-input-sm) {
+  grid-column: 1 / -1;
+}
+
+.stop-input {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 13px;
+  color: #1f2937;
+}
+
+.stop-input:focus {
+  outline: none;
+  border-color: #93b4f5;
+}
+
+.stops-error {
+  font-size: 13px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 9px 11px;
+}
+
+.stop-add {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+
+.stop-add-btn {
+  align-self: flex-start;
+}
