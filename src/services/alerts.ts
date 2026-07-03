@@ -22,3 +22,5 @@ export const listAlerts = (params: ListAlertsParams = {}) =>
   api<Page<Alert>>(`/alerts${toQuery(params as Record<string, unknown>)}`)
 
 export const acknowledgeAlert = (id: string) => api<Alert>(`/alerts/${id}/acknowledge`, { method: 'PATCH' })
+
+export const unacknowledgeAlert = (id: string) => api<Alert>(`/alerts/${id}/unacknowledge`, { method: 'PATCH' })

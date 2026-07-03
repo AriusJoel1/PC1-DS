@@ -159,3 +159,23 @@
 .bell-acked {
   color: #16a34a;
 }
+
+.bell-panel-foot {
+  padding: 10px 16px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+.bell-panel-foot .link-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: #1d4ed8;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bell-panel-foot .link-btn:hover {
+  color: #1e40af;
+}

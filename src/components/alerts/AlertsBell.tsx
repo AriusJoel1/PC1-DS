@@ -1,16 +1,23 @@
 import { useState } from 'react'
 import { Bell, Check } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { useAcknowledgeAlert, useAlerts } from '../../hooks/useAlerts'
 import { formatRelativeTime } from '../../lib/format'
 import './AlertsBell.css'
 
 function AlertsBell() {
   const [open, setOpen] = useState(false)
-  const { data } = useAlerts({ pageSize: 50 })
+  const navigate = useNavigate()
+  const { data } = useAlerts({ acknowledged: 'false', pageSize: 50 })
   const acknowledge = useAcknowledgeAlert()
 
   const items = data?.data ?? []
-  const unread = items.filter((a) => !a.acknowledgedAt).length
+  const unread = items.length
+
+  const goToAll = () => {
+    setOpen(false)
+    navigate('/alertas')
+  }
 
   return (
     <div className="bell-wrap">
@@ -42,7 +49,7 @@ function AlertsBell() {
 
             <div className="bell-list">
               {items.length === 0 ? (
-                <div className="bell-empty">No hay alertas.</div>
+                <div className="bell-empty">No hay alertas sin atender.</div>
               ) : (
                 items.map((alert) => (
                   <div
@@ -76,6 +83,15 @@ function AlertsBell() {
                   </div>
                 ))
               )}
+            </div>
+
+            <div className="bell-panel-foot">
+              <button
+                className="link-btn"
+                onClick={goToAll}
+              >
+                Ver todas
+              </button>
             </div>
           </div>
         </>

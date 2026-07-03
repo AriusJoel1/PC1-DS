@@ -1,0 +1,99 @@
+.alerts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.alert-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 4px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.alert-row.is-acked {
+  opacity: 0.7;
+}
+
+.alert-dot {
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  margin-top: 5px;
+  border-radius: 999px;
+}
+
+.alert-dot.danger {
+  background: #ef4444;
+}
+
+.alert-dot.warning {
+  background: #f59e0b;
+}
+
+.alert-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.alert-title-row strong {
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.alert-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.alert-badge.pending {
+  color: #b45309;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+}
+
+.alert-badge.acked {
+  color: #15803d;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.alert-body p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #475569;
+}
+
+.alert-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.alert-ack-btn {
+  flex-shrink: 0;
+}
+
+.alert-acked-icon {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  color: #16a34a;
+  background: #f0fdf4;
+}

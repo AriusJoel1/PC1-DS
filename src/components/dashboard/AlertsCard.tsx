@@ -1,4 +1,5 @@
 import { CircleAlert } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import './AlertsCard.css'
 
 type AlertItem = {
@@ -14,6 +15,7 @@ type AlertsCardProps = {
 }
 
 function AlertsCard({ alerts }: AlertsCardProps) {
+  const navigate = useNavigate()
   return (
     <section className="card alerts-card">
       <div className="section-head">
@@ -21,7 +23,12 @@ function AlertsCard({ alerts }: AlertsCardProps) {
           <h2>Alertas Críticas</h2>
           <p>Eventos relevantes en tiempo real</p>
         </div>
-        <button className="link-btn">Ver todas</button>
+        <button
+          className="link-btn"
+          onClick={() => navigate('/alertas')}
+        >
+          Ver todas
+        </button>
       </div>
 
       <div className="alerts-list">

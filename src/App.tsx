@@ -9,6 +9,7 @@ import MonitoringPage from './pages/MonitoringPage'
 import DashboardPage from './pages/DashboardPage'
 import FleetPage from './pages/FleetPage'
 import RoutesPage from './pages/RoutesPage'
+import AlertsPage from './pages/AlertsPage'
 import LoginPage from './pages/LoginPage'
 import AlertsBell from './components/alerts/AlertsBell'
 import { RequireAuth } from './auth/RequireAuth'
@@ -142,6 +143,10 @@ function App() {
             <Route
               path="/monitoreo"
               element={<MonitoringPage />}
+            />
+            <Route
+              path="/alertas"
+              element={<AlertsPage />}
             />
             <Route
               path="*"
