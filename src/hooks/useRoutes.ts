@@ -1,12 +1,17 @@
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
+  createRoute,
   createStop,
+  deleteRoute,
   deleteStop,
   getRoute,
   listRoutes,
   routesSummary,
+  updateRoute,
   updateStop,
   type ListRoutesParams,
+  type RouteCreate,
+  type RouteUpdate,
   type StopCreate,
   type StopUpdate,
 } from '../services/routes'
@@ -38,6 +43,30 @@ export function useRoute(code: string | null) {
 function invalidateRoute(qc: ReturnType<typeof useQueryClient>, code: string) {
   qc.invalidateQueries({ queryKey: ['routes', 'detail', code] })
   qc.invalidateQueries({ queryKey: ['routes'] })
+}
+
+export function useCreateRoute() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (route: RouteCreate) => createRoute(route),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['routes'] }),
+  })
+}
+
+export function useUpdateRoute() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: ({ code, patch }: { code: string; patch: RouteUpdate }) => updateRoute(code, patch),
+    onSuccess: (_data, { code }) => invalidateRoute(qc, code),
+  })
+}
+
+export function useDeleteRoute() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (code: string) => deleteRoute(code),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['routes'] }),
+  })
 }
 
 export function useCreateStop(code: string) {

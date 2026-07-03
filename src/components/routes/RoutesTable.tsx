@@ -1,4 +1,4 @@
-import { Eye } from 'lucide-react'
+import { Eye, Pencil, Trash2 } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import type { Route } from '../../services/routes'
 import './RoutesTable.css'
@@ -6,9 +6,11 @@ import './RoutesTable.css'
 type RoutesTableProps = {
   rows: Route[]
   onSelect: (code: string) => void
+  onEdit: (route: Route) => void
+  onDelete: (route: Route) => void
 }
 
-function RoutesTable({ rows, onSelect }: RoutesTableProps) {
+function RoutesTable({ rows, onSelect, onEdit, onDelete }: RoutesTableProps) {
   const navigate = useNavigate()
   return (
     <div className="table-wrap">
@@ -58,13 +60,29 @@ function RoutesTable({ rows, onSelect }: RoutesTableProps) {
                 </span>
               </td>
               <td>
-                <button
-                  className="more-btn"
-                  onClick={() => onSelect(row.code)}
-                  aria-label={`Ver ruta ${row.code}`}
-                >
-                  <Eye size={15} />
-                </button>
+                <div className="row-actions">
+                  <button
+                    className="more-btn"
+                    onClick={() => onSelect(row.code)}
+                    aria-label={`Ver ruta ${row.code}`}
+                  >
+                    <Eye size={15} />
+                  </button>
+                  <button
+                    className="more-btn"
+                    onClick={() => onEdit(row)}
+                    aria-label={`Editar ruta ${row.code}`}
+                  >
+                    <Pencil size={15} />
+                  </button>
+                  <button
+                    className="more-btn more-btn-danger"
+                    onClick={() => onDelete(row)}
+                    aria-label={`Eliminar ruta ${row.code}`}
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

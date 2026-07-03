@@ -57,12 +57,32 @@ export interface ListRoutesParams {
   pageSize?: number
 }
 
+export interface RouteCreate {
+  code: string
+  name: string
+  type: RouteType
+  length: number
+  frequencyMinutes: number
+  buses?: number
+  state?: RouteState
+}
+
+export type RouteUpdate = Partial<Omit<RouteCreate, 'code'>> // el código no es editable
+
 export const listRoutes = (params: ListRoutesParams = {}): Promise<Page<Route>> =>
   api<Page<Route>>(`/routes${toQuery(params as Record<string, unknown>)}`)
 
 export const routesSummary = () => api<RoutesSummary>('/routes/summary')
 
 export const getRoute = (code: string) => api<RouteDetail>(`/routes/${code}`)
+
+export const createRoute = (route: RouteCreate) =>
+  api<Route>('/routes', { method: 'POST', body: JSON.stringify(route) })
+
+export const updateRoute = (code: string, patch: RouteUpdate) =>
+  api<Route>(`/routes/${code}`, { method: 'PATCH', body: JSON.stringify(patch) })
+
+export const deleteRoute = (code: string) => api<void>(`/routes/${code}`, { method: 'DELETE' })
 
 export const getRouteStops = (code: string) => api<Stop[]>(`/routes/${code}/stops`)
 

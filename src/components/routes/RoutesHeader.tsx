@@ -1,6 +1,10 @@
 import { Plus } from 'lucide-react';
 
-function RoutesHeader() {
+type RoutesHeaderProps = {
+  onNew: () => void;
+};
+
+function RoutesHeader({ onNew }: RoutesHeaderProps) {
   return (
     <div className="section-head">
       <div>
@@ -10,7 +14,7 @@ function RoutesHeader() {
         </p>
       </div>
 
-      <button className="btn btn-primary">
+      <button className="btn btn-primary" onClick={onNew}>
         <Plus size={16} />
         Nueva Ruta
       </button>

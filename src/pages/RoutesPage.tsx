@@ -3,14 +3,32 @@ import RoutesHeader from '../components/routes/RoutesHeader'
 import RoutesSummary from '../components/routes/RoutesSummary'
 import RoutesTable from '../components/routes/RoutesTable'
 import RouteDetailDrawer from '../components/routes/RouteDetailDrawer'
+import RouteFormDialog from '../components/routes/RouteFormDialog'
+import ConfirmDialog from '../components/common/ConfirmDialog'
 import StateMessage from '../components/common/StateMessage'
 import { errorMessage } from '../lib/errorMessage'
-import { useRoutes, useRoutesSummary } from '../hooks/useRoutes'
+import { useDeleteRoute, useRoutes, useRoutesSummary } from '../hooks/useRoutes'
+import type { Route } from '../services/routes'
 
 function RoutesPage() {
   const { data, isLoading, isError, error } = useRoutes({ pageSize: 100 })
   const { data: summary } = useRoutesSummary()
   const [selectedCode, setSelectedCode] = useState<string | null>(null)
+  const [creating, setCreating] = useState(false)
+  const [editing, setEditing] = useState<Route | null>(null)
+  const [deleting, setDeleting] = useState<Route | null>(null)
+
+  const deleteRoute = useDeleteRoute()
+
+  const confirmDelete = async () => {
+    if (!deleting) return
+    try {
+      await deleteRoute.mutateAsync(deleting.code)
+      setDeleting(null)
+    } catch {
+      // El error se muestra en el diálogo vía deleteRoute.error.
+    }
+  }
 
   const rows = data?.data ?? []
   const total = summary?.total ?? data?.meta.total ?? 0
@@ -18,7 +36,7 @@ function RoutesPage() {
   return (
     <div className="page">
       <section className="card table-card">
-        <RoutesHeader />
+        <RoutesHeader onNew={() => setCreating(true)} />
         <RoutesSummary
           total={summary?.total ?? 0}
           active={summary?.active ?? 0}
@@ -46,6 +64,8 @@ function RoutesPage() {
           <RoutesTable
             rows={rows}
             onSelect={setSelectedCode}
+            onEdit={setEditing}
+            onDelete={setDeleting}
           />
         )}
 
@@ -60,6 +80,30 @@ function RoutesPage() {
         <RouteDetailDrawer
           code={selectedCode}
           onClose={() => setSelectedCode(null)}
+        />
+      ) : null}
+
+      {creating ? <RouteFormDialog onClose={() => setCreating(false)} /> : null}
+
+      {editing ? (
+        <RouteFormDialog
+          key={editing.code}
+          route={editing}
+          onClose={() => setEditing(null)}
+        />
+      ) : null}
+
+      {deleting ? (
+        <ConfirmDialog
+          title={`¿Eliminar la ruta ${deleting.code}?`}
+          message={`Se eliminará "${deleting.name}" y sus paradas. Esta acción no se puede deshacer.`}
+          pending={deleteRoute.isPending}
+          error={deleteRoute.isError ? errorMessage(deleteRoute.error) : null}
+          onConfirm={confirmDelete}
+          onClose={() => {
+            setDeleting(null)
+            deleteRoute.reset()
+          }}
         />
       ) : null}
     </div>

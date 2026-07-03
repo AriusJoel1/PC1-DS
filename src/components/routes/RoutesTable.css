@@ -41,3 +41,13 @@
 .link-btn:hover {
   color: #1e40af;
 }
+
+.row-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.more-btn-danger:hover {
+  color: #dc2626;
+  background: #fef2f2;
+}
