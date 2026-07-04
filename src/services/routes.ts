@@ -23,6 +23,20 @@ export interface Stop {
   lng: number | null
 }
 
+// Tipo de dia para las franjas de frecuencia (RF-07).
+export type DayType = 'Laborable' | 'Sabado' | 'Domingo'
+
+// Franja horaria dentro de un dia (RF-07).
+export type TimeBand = 'Pico Manana' | 'Pico Tarde' | 'Valle' | 'Baja'
+
+// Una franja de frecuencia: para cierto dia y tramo horario, cada cuantos
+// minutos pasa un bus.
+export interface FrequencyBand {
+  dayType: DayType
+  timeBand: TimeBand
+  intervalMinutes: number
+}
+
 export interface StopCreate {
   name: string
   order?: number
@@ -43,6 +57,9 @@ export interface RouteDetail {
   state: RouteState
   imageUrl: string | null
   stops: Stop[]
+  // Franjas de frecuencia de la ruta. Puede venir vacio si el backend aun no
+  // las expone.
+  frequencyBands?: FrequencyBand[]
 }
 
 export interface RoutesSummary {
@@ -67,6 +84,8 @@ export interface RouteCreate {
   frequencyMinutes: number
   buses?: number
   state?: RouteState
+  // Franjas de frecuencia enviadas junto a la ruta (RF-07).
+  frequencyBands?: FrequencyBand[]
 }
 
 export type RouteUpdate = Partial<Omit<RouteCreate, 'code'>> // el código no es editable

@@ -1,0 +1,98 @@
+.bands-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bands-empty {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.bands-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.band-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.band-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 13px;
+  color: #1f2937;
+}
+
+.band-meta {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.band-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.band-edit-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.band-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 80px;
+  gap: 6px;
+  flex: 1;
+}
+
+.band-input {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 13px;
+  color: #1f2937;
+  background: #fff;
+}
+
+.band-input:focus {
+  outline: none;
+  border-color: #93b4f5;
+}
+
+.bands-error {
+  font-size: 13px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  padding: 9px 11px;
+}
+
+.band-add {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+
+.band-add-btn {
+  align-self: flex-start;
+}

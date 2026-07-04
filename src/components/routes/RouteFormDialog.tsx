@@ -1,8 +1,16 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { ImagePlus, X } from 'lucide-react'
-import type { Route, RouteCreate, RouteState, RouteType, RouteUpdate } from '../../services/routes'
+import type {
+  FrequencyBand,
+  Route,
+  RouteCreate,
+  RouteState,
+  RouteType,
+  RouteUpdate,
+} from '../../services/routes'
 import { useCreateRoute, useUpdateRoute, useUploadRouteImage } from '../../hooks/useRoutes'
 import { errorMessage } from '../../lib/errorMessage'
+import FrequencyBandsEditor from './FrequencyBandsEditor'
 import './RouteFormDialog.css'
 
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024 // 5 MB (límite del backend)
@@ -28,6 +36,7 @@ function RouteFormDialog({ route, onClose }: RouteFormDialogProps) {
   const [frequency, setFrequency] = useState(String(route?.frequencyMinutes ?? ''))
   const [buses, setBuses] = useState(String(route?.buses ?? 0))
   const [state, setState] = useState<RouteState>(route?.state ?? 'Activa')
+  const [frequencyBands, setFrequencyBands] = useState<FrequencyBand[]>([])
   const [file, setFile] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(route?.imageUrl ?? null)
   const [error, setError] = useState<string | null>(null)
@@ -64,6 +73,7 @@ function RouteFormDialog({ route, onClose }: RouteFormDialogProps) {
           frequencyMinutes: Number(frequency),
           buses: Number(buses),
           state,
+          frequencyBands,
         }
         await update.mutateAsync({ code: route.code, patch })
       } else {
@@ -75,6 +85,7 @@ function RouteFormDialog({ route, onClose }: RouteFormDialogProps) {
           frequencyMinutes: Number(frequency),
           buses: Number(buses),
           state,
+          frequencyBands,
         }
         const created = await create.mutateAsync(payload)
         targetCode = created.code
@@ -205,6 +216,14 @@ function RouteFormDialog({ route, onClose }: RouteFormDialogProps) {
                 ))}
               </select>
             </label>
+          </div>
+
+          <div className="modal-field">
+            <span>Franjas de frecuencia (opcional)</span>
+            <FrequencyBandsEditor
+              bands={frequencyBands}
+              onChange={setFrequencyBands}
+            />
           </div>
 
           <div className="modal-field">

@@ -79,6 +79,27 @@ function RouteDetailDrawer({ code, onClose }: RouteDetailDrawerProps) {
               </div>
             </div>
 
+            {data.frequencyBands && data.frequencyBands.length > 0 ? (
+              <>
+                <h3 className="drawer-section-title">
+                  Franjas de frecuencia ({data.frequencyBands.length})
+                </h3>
+                <ul className="drawer-bands">
+                  {data.frequencyBands.map((band) => (
+                    <li
+                      key={`${band.dayType}-${band.timeBand}`}
+                      className="drawer-band"
+                    >
+                      <strong>{band.timeBand}</strong>
+                      <span className="drawer-band-meta">
+                        {band.dayType} - cada {band.intervalMinutes} min
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
+
             <h3 className="drawer-section-title">Paradas ({data.stops.length})</h3>
             <RouteStopsEditor
               code={data.code}
