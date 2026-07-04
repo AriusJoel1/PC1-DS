@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useState } from 'react'
 import { Check, Pencil, Plus, Trash2, X } from 'lucide-react'
 import type { DayType, FrequencyBand, TimeBand } from '../../services/routes'
 import './FrequencyBandsEditor.css'
@@ -83,8 +83,7 @@ function FrequencyBandsEditor({ bands, onChange }: FrequencyBandsEditorProps) {
     onChange(bands.filter((_, i) => i !== index))
   }
 
-  const onAdd = (e: FormEvent) => {
-    e.preventDefault()
+  const onAdd = () => {
     setError(null)
     const interval = toInterval(nInterval)
     if (interval == null) {
@@ -214,10 +213,7 @@ function FrequencyBandsEditor({ bands, onChange }: FrequencyBandsEditorProps) {
 
       {error ? <div className="bands-error">{error}</div> : null}
 
-      <form
-        className="band-add"
-        onSubmit={onAdd}
-      >
+      <div className="band-add">
         <div className="band-grid">
           <select
             className="band-input"
@@ -260,13 +256,14 @@ function FrequencyBandsEditor({ bands, onChange }: FrequencyBandsEditorProps) {
           />
         </div>
         <button
-          type="submit"
+          type="button"
+          onClick={onAdd}
           className="btn btn-ghost band-add-btn"
         >
           <Plus size={15} />
           Agregar franja
         </button>
-      </form>
+      </div>
     </div>
   )
 }
