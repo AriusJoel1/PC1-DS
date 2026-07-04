@@ -1,5 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
-import { getAvailability, getKpis, getRecentAlerts, getRouteCompliance } from '../services/dashboard'
+import {
+  getAdherence,
+  getAvailability,
+  getKpis,
+  getRecentAlerts,
+  getRouteCompliance,
+} from '../services/dashboard'
 
 export function useKpis() {
   return useQuery({ queryKey: ['dashboard', 'kpis'], queryFn: getKpis })
@@ -15,4 +21,8 @@ export function useRouteCompliance() {
 
 export function useRecentAlerts(limit = 3) {
   return useQuery({ queryKey: ['dashboard', 'alerts', limit], queryFn: () => getRecentAlerts(limit) })
+}
+
+export function useAdherence() {
+  return useQuery({ queryKey: ['dashboard', 'adherence'], queryFn: getAdherence })
 }
