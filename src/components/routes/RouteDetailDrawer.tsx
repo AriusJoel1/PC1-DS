@@ -1,8 +1,9 @@
 import { X } from 'lucide-react'
-import { useRoute } from '../../hooks/useRoutes'
+import { useRoute, useRouteVersions } from '../../hooks/useRoutes'
 import StateMessage from '../common/StateMessage'
 import RouteStopsEditor from './RouteStopsEditor'
 import { errorMessage } from '../../lib/errorMessage'
+import { formatDate } from '../../lib/format'
 import './RouteDetailDrawer.css'
 
 type RouteDetailDrawerProps = {
@@ -12,6 +13,7 @@ type RouteDetailDrawerProps = {
 
 function RouteDetailDrawer({ code, onClose }: RouteDetailDrawerProps) {
   const { data, isLoading, isError, error } = useRoute(code)
+  const { data: versions = [] } = useRouteVersions(code)
 
   return (
     <div className="drawer-layer">
@@ -105,6 +107,22 @@ function RouteDetailDrawer({ code, onClose }: RouteDetailDrawerProps) {
               code={data.code}
               stops={data.stops}
             />
+
+            {versions.length > 0 ? (
+              <>
+                <h3 className="drawer-section-title">Historial de versiones ({versions.length})</h3>
+                <ul className="drawer-bands">
+                  {versions.map((v) => (
+                    <li key={v.version} className="drawer-band">
+                      <strong>v{v.version}</strong>
+                      <span className="drawer-band-meta">
+                        {v.name} - {v.frequencyMinutes} min - {formatDate(v.createdAt)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : null}
           </div>
         ) : null}
       </aside>

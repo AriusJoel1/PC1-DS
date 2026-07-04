@@ -120,3 +120,17 @@ export const updateStop = (id: string, patch: StopUpdate) =>
   api<Stop>(`/stops/${id}`, { method: 'PATCH', body: JSON.stringify(patch) })
 
 export const deleteStop = (id: string) => api<void>(`/stops/${id}`, { method: 'DELETE' })
+
+// Historial de versiones de una ruta (RF-11).
+export interface RouteVersion {
+  version: number
+  name: string
+  type: RouteType
+  lengthKm: number
+  frequencyMinutes: number
+  state: RouteState
+  createdAt: string
+}
+
+export const getRouteVersions = (code: string) =>
+  api<RouteVersion[]>(`/routes/${code}/versions`)
