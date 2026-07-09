@@ -15,7 +15,7 @@ function RouteComplianceCard({ routeCompliance }: RouteComplianceCardProps) {
     <section className="card compliance-card">
       <div className="section-head">
         <div>
-          <h2>Cumplimiento por Ruta (Top / Bottom 3)</h2>
+          <h2>Cumplimiento por Ruta</h2>
           <p>Rendimiento por servicio</p>
         </div>
       </div>
