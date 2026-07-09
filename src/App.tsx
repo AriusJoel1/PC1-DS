@@ -10,6 +10,9 @@ import DashboardPage from './pages/DashboardPage'
 import FleetPage from './pages/FleetPage'
 import RoutesPage from './pages/RoutesPage'
 import AlertsPage from './pages/AlertsPage'
+import MaintenancePage from './pages/MaintenancePage'
+import SimulationPage from './pages/SimulationPage'
+import ReportsPage from './pages/ReportsPage'
 import LoginPage from './pages/LoginPage'
 import AlertsBell from './components/alerts/AlertsBell'
 import { RequireAuth } from './auth/RequireAuth'
@@ -20,6 +23,9 @@ const sectionToPath: Record<SectionId, string> = {
   flota: '/flota',
   rutas: '/rutas',
   monitoreo: '/monitoreo',
+  mantenimiento: '/mantenimiento',
+  simulacion: '/simulacion',
+  reportes: '/reportes',
 }
 
 function App() {
@@ -147,6 +153,18 @@ function App() {
             <Route
               path="/alertas"
               element={<AlertsPage />}
+            />
+            <Route
+              path="/mantenimiento"
+              element={<MaintenancePage />}
+            />
+            <Route
+              path="/simulacion"
+              element={<SimulationPage />}
+            />
+            <Route
+              path="/reportes"
+              element={<ReportsPage />}
             />
             <Route
               path="*"

@@ -2,9 +2,10 @@ import { Plus } from 'lucide-react';
 
 type FleetHeaderProps = {
   onNew: () => void;
+  canWrite: boolean;
 };
 
-function FleetHeader({ onNew }: FleetHeaderProps) {
+function FleetHeader({ onNew, canWrite }: FleetHeaderProps) {
   return (
     <div className="section-head">
       <div>
@@ -14,10 +15,12 @@ function FleetHeader({ onNew }: FleetHeaderProps) {
         </p>
       </div>
 
-      <button className="btn btn-primary" onClick={onNew}>
-        <Plus size={16} />
-        Nuevo Vehículo
-      </button>
+      {canWrite ? (
+        <button className="btn btn-primary" onClick={onNew}>
+          <Plus size={16} />
+          Nuevo Vehículo
+        </button>
+      ) : null}
     </div>
   );
 }

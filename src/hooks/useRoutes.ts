@@ -5,6 +5,7 @@ import {
   deleteRoute,
   deleteStop,
   getRoute,
+  getRouteVersions,
   listRoutes,
   routesSummary,
   updateRoute,
@@ -36,6 +37,14 @@ export function useRoute(code: string | null) {
   return useQuery({
     queryKey: ['routes', 'detail', code],
     queryFn: () => getRoute(code as string),
+    enabled: code != null,
+  })
+}
+
+export function useRouteVersions(code: string | null) {
+  return useQuery({
+    queryKey: ['routes', 'versions', code],
+    queryFn: () => getRouteVersions(code as string),
     enabled: code != null,
   })
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Check, Undo2 } from 'lucide-react'
 import { useAcknowledgeAlert, useAlerts, useUnacknowledgeAlert } from '../hooks/useAlerts'
+import { usePermissions } from '../auth/usePermissions'
 import StateMessage from '../components/common/StateMessage'
 import { errorMessage } from '../lib/errorMessage'
 import { formatRelativeTime } from '../lib/format'
@@ -21,6 +22,7 @@ function AlertsPage() {
   const acknowledge = useAcknowledgeAlert()
   const unacknowledge = useUnacknowledgeAlert()
   const busy = acknowledge.isPending || unacknowledge.isPending
+  const { canAcknowledge } = usePermissions()
 
   const items = data?.data ?? []
 
@@ -98,7 +100,7 @@ function AlertsPage() {
                     ) : null}
                   </div>
                 </div>
-                {alert.acknowledgedAt ? (
+                {!canAcknowledge ? null : alert.acknowledgedAt ? (
                   <button
                     className="btn btn-ghost alert-ack-btn"
                     onClick={() => unacknowledge.mutate(alert.id)}

@@ -1,0 +1,107 @@
+/* Estilos de la pagina de reportes (RF-21, RF-22, RF-23, RF-26). */
+
+.report-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.report-tab {
+  height: 38px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #f8fafc;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.report-tab:hover {
+  background: #eef2f7;
+}
+
+.report-tab.active {
+  background: #0f172a;
+  border-color: #0f172a;
+  color: #fff;
+}
+
+/* Filtro de fecha o mes con su etiqueta encima. */
+.report-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+/* Reusa el mismo look del selector de filtros de flota. */
+.report-field .select-like {
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: #f8fafc;
+  padding: 0 14px;
+  color: #475569;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.report-caption {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* Tarjetas de indicadores del reporte. */
+.report-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.report-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: #f8fafc;
+}
+
+.report-stat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.report-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Contenedor del grafico Recharts, igual altura que el del dashboard. */
+.chart-box {
+  height: 310px;
+  margin: 14px 0;
+}
+
+/* Dos tablas lado a lado para fallas por descripcion y por componente. */
+.report-tables {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .report-tables {
+    grid-template-columns: 1fr;
+  }
+}

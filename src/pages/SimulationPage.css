@@ -1,0 +1,98 @@
+.sim-controls {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 720px) {
+  .sim-controls {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sim-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sim-field > span {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sim-select {
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.sim-slider-value {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.sim-slider-value small {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-left: 6px;
+}
+
+.sim-range {
+  width: 100%;
+  accent-color: #2563eb;
+}
+
+.sim-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+@media (max-width: 900px) {
+  .sim-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.sim-card {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.sim-card span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.sim-card strong {
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.sim-card strong small {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+.sim-chart-box {
+  height: 300px;
+}

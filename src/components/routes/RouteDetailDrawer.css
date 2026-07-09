@@ -107,6 +107,31 @@
   gap: 8px;
 }
 
+.drawer-bands {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.drawer-band {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 13px;
+  color: #1f2937;
+}
+
+.drawer-band-meta {
+  font-size: 12px;
+  color: #64748b;
+}
+
 .drawer-stop {
   display: flex;
   align-items: center;

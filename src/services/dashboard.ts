@@ -35,4 +35,14 @@ export const getAvailability = (range: 'week' | 'month' = 'week') =>
 
 export const getRouteCompliance = () => api<RouteComplianceItem[]>('/dashboard/route-compliance')
 
+// Adherencia por ruta: buses programados vs en operacion (RF-15).
+export interface AdherenceItem {
+  routeCode: string
+  scheduled: number
+  running: number
+  adherence: number
+}
+
+export const getAdherence = () => api<AdherenceItem[]>('/dashboard/adherence')
+
 export const getRecentAlerts = (limit = 3) => api<RecentAlert[]>(`/dashboard/alerts${toQuery({ limit })}`)
