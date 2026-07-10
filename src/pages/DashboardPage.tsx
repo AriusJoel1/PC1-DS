@@ -2,20 +2,20 @@
 import DashboardHero from '../components/dashboard/DashboardHero'
 import AvailabilityChartCard from '../components/dashboard/AvailabilityChartCard'
 import AlertsCard from '../components/dashboard/AlertsCard'
-import RouteComplianceCard from '../components/dashboard/RouteComplianceCard'
+// import RouteComplianceCard from '../components/dashboard/RouteComplianceCard'
 import AdherenceCard from '../components/dashboard/AdherenceCard'
 // import QuickActionsCard from '../components/dashboard/QuickActionsCard'
 import StateMessage from '../components/common/StateMessage'
-import { useAvailability, useKpis, useRecentAlerts, useRouteCompliance } from '../hooks/useDashboard'
+import { useAvailability, useKpis, useRecentAlerts } from '../hooks/useDashboard'
 import { formatRelativeTime } from '../lib/format'
 
 function DashboardPage() {
   const { data: kpis = [], isError: kpisError } = useKpis()
   const { data: weeklyData = [], isError: availabilityError } = useAvailability('week')
-  const { data: routeCompliance = [], isError: complianceError } = useRouteCompliance()
+  // const { data: routeCompliance = [], isError: complianceError } = useRouteCompliance()
   const { data: recentAlerts = [], isError: alertsError } = useRecentAlerts(3)
 
-  const hasError = kpisError || availabilityError || complianceError || alertsError
+  const hasError = kpisError || availabilityError  || alertsError
 
   const alerts = recentAlerts.map((a) => ({
     id: a.id,
@@ -43,7 +43,7 @@ function DashboardPage() {
       </div>
 
       <div className="dashboard-grid second">
-        <RouteComplianceCard routeCompliance={routeCompliance} />
+        {/* <RouteComplianceCard routeCompliance={routeCompliance} /> */}
         <AdherenceCard />
       </div>
     </div>
