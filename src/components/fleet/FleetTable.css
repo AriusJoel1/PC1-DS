@@ -27,6 +27,9 @@
 .km-fill.bad {
   background: #ef4444;
 }
+.km-fill.muted {
+  background: #9ca3af;
+}
 
 .row-actions {
   display: flex;

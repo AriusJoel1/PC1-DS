@@ -168,6 +168,11 @@
   color: #b91c1c;
 }
 
+.status-pill.dado-de-baja {
+  background: #e5e7eb;
+  color: #4b5563;
+}
+
 .more-btn {
   width: 34px;
   height: 34px;

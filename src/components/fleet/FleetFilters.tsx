@@ -3,7 +3,7 @@ import type { Route } from '../../services/routes'
 import type { VehicleState, VehicleType } from '../../services/vehicles'
 import './FleetFilters.css'
 
-const STATES: VehicleState[] = ['Operativo', 'En Taller', 'Alerta']
+const STATES: VehicleState[] = ['Operativo', 'En Taller', 'Alerta', 'Dado de Baja']
 const TYPES: VehicleType[] = ['Bus Articulado', 'Alimentador']
 
 type FleetFiltersProps = {

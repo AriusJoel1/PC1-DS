@@ -7,7 +7,7 @@ import { useCreateVehicle, useUpdateVehicle } from '../../hooks/useVehicles'
 import { errorMessage } from '../../lib/errorMessage'
 import './VehicleFormDialog.css'
 
-const STATES: VehicleState[] = ['Operativo', 'En Taller', 'Alerta']
+const STATES: VehicleState[] = ['Operativo', 'En Taller', 'Alerta', 'Dado de Baja']
 const TYPES: VehicleType[] = ['Bus Articulado', 'Alimentador']
 
 const today = () => new Date().toISOString().slice(0, 10)

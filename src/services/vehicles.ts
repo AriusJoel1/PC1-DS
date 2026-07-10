@@ -3,7 +3,7 @@ import { api, toQuery, type Page } from './http'
 export type { Page }
 
 export type VehicleType = 'Bus Articulado' | 'Alimentador'
-export type VehicleState = 'Operativo' | 'En Taller' | 'Alerta'
+export type VehicleState = 'Operativo' | 'En Taller' | 'Alerta' | 'Dado de Baja'
 
 export interface Vehicle {
   id: string // ⚠️ usar como React key (no `plate`)

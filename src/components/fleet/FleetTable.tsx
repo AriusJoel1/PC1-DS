@@ -43,14 +43,20 @@ function FleetTable({ rows, onEdit, onDelete, canWrite }: FleetTableProps) {
                   <div className="km-bar">
                     <div
                       className={`km-fill ${
-                        row.state === 'Operativo' ? 'ok' : row.state === 'En Taller' ? 'warn' : 'bad'
+                        row.state === 'Operativo'
+                          ? 'ok'
+                          : row.state === 'En Taller'
+                            ? 'warn'
+                            : row.state === 'Dado de Baja'
+                              ? 'muted'
+                              : 'bad'
                       }`}
                     />
                   </div>
                 </div>
               </td>
               <td>
-                <span className={`status-pill ${row.state.toLowerCase().replace(' ', '-')}`}>{row.state}</span>
+                <span className={`status-pill ${row.state.toLowerCase().replaceAll(' ', '-')}`}>{row.state}</span>
               </td>
               <td>{formatDate(row.lastInspectionDate)}</td>
               <td>
